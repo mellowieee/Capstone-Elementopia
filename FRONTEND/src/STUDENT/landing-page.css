@@ -76,7 +76,7 @@ body {
   transform: scale(1.05);
   transition: all 0.3s ease-in-out;
 }
-
+/*-----------------Landing Page Ends---------------------- */
 /* -----------------Introduction---------------------- */
 .content-introduction {
   position: relative;
@@ -129,17 +129,6 @@ body {
   opacity: 0.8;
   transform: scale(1.05);
   transition: all 0.3s ease-in-out;
-}
-
-/* -----------------Footer---------------------- */
-.footer {
-  width: 100%;
-  text-align: center;
-  padding: 20px;
-  background: rgba(0, 0, 0, 0.9);
-  color: white;
-  position: relative;
-  top: 200px;
 }
 
 /* -----------------Responsive Fixes---------------------- */

@@ -1,0 +1,15 @@
+#root{
+    padding: 0;
+    margin: 0;
+}
+.footer {
+    width: 100%;
+    text-align: center;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.9);
+    color: white;
+    position: relative;
+    top: 1000px;
+    right: 1000px;
+  }
+  
