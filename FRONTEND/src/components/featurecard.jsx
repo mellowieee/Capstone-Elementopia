@@ -1,7 +1,8 @@
 import React from "react";
 import "./featurecard.css";
+import logo from "../assets/Logo.svg";
 
-const FeatureCard = ({ title, description, icon, className, gradient = "purple" }) => {
+const FeatureCard = ({ title, description, icon, className, gradient = "purple", children }) => {
   return (
     <div className={`feature-card ${gradient} ${className}`}>
       {/* Gradient accent */}
@@ -10,10 +11,14 @@ const FeatureCard = ({ title, description, icon, className, gradient = "purple" 
       <div className="feature-card-header">
         <div className="feature-card-icon">{icon && <div>{icon}</div>}</div>
         <h3 className={`feature-card-title ${gradient}`}>{title}</h3>
+        <img src={logo} alt="Login & Sign Up Logo" className="Logo" />;
       </div>
 
       <div className="feature-card-content">
         <p className="feature-card-description">{description}</p>
+
+        {/* Render children inside FeatureCard */}
+        {children && <div className="feature-card-extra">{children}</div>}
       </div>
     </div>
   );

@@ -95,4 +95,10 @@
   .feature-card-description {
     color: #D1D5DB;
   }
-  
+  .Logo{
+    width: 40vh;
+    display: flex;
+    justify-content: left;
+    align-items: left;
+    margin: 10px 0;
+  }
