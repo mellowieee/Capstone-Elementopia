@@ -3,6 +3,7 @@ import './landing-page.css';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import FeatureCard from "../components/featurecard";
 
 function LandingPage() {
   console.log("LandingPage component rendered!");
