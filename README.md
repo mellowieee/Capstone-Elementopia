@@ -29,4 +29,5 @@ Elementopia is an interactive, gamified platform designed to enhance high school
 3. TYPE on your command prompt or your terminal in your IDE the following code to download dependencies, "**npm install**".
 4. TYPE "**npm run dev**" in the terminal to start the application.
 
+
 Note: For the IDE's, We are using VSCode for Frontend and Intellij for Backend. However, you can always use your preffered IDE.
