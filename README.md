@@ -29,8 +29,4 @@ Elementopia is an interactive, gamified platform designed to enhance high school
 3. TYPE on your command prompt or your terminal in your IDE the following code to download dependencies, "**npm install**".
 4. TYPE "**npm run dev**" in the terminal to start the application.
 
-# Current npm installs
-1. npm install slick-carousel (Carousel Feature)
-2. npm install lucide-react   (Burger Menu) (Can be removed and use (div) instead. Please DM Rey Mar Segalle)
-
 Note: For the IDE's, We are using VSCode for Frontend and Intellij for Backend. However, you can always use your preffered IDE.
