@@ -21,8 +21,6 @@ body {
 /* -----------------Landing Page---------------------- */
 .landingpage-container {
   width: 100%;
-  /* max-width: 200px; */
-  /* height: 20px; */
   border-bottom: 1px solid white;
   margin: 0 auto;
   padding: 0 20px;
@@ -45,6 +43,8 @@ body {
 }
 
 .content-desc {
+  font-size: 1.2rem;
+  margin-top: 50px;
   font-size: 1.2rem;
   margin-top: 50px;
   text-shadow: 0px 0px 12px rgba(100, 231, 111, 0.2);
