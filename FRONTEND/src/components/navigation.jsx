@@ -1,9 +1,18 @@
 import React, { useState } from 'react';
 import { Menu, X } from 'lucide-react';
 import './navigation.css';
+import LoginCard from "../STUDENT/login-card";
 
 export default function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
+
+  const handleLogin = () => {
+    setIsLoginOpen(true);
+  };
+  const handleLoginClose = () => {
+    setIsLoginOpen(false);
+  }
 
   return (
     <div className="landingpage-container">
@@ -37,7 +46,7 @@ export default function Navigation() {
 
         {/* Right Side - Login & Sign Up */}
         <div className="auth-links">
-          <a href="/login">Login</a>
+          <a href="/login" onClick={handleLogin}>Login</a>
           <a className="signup" href="/sign-up">Sign Up</a>
         </div>
       </nav>
