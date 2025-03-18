@@ -10,6 +10,10 @@
     font-weight: bold;
 
 }
+.login-container{
+    display: flex;
+    flex-shrink: 1;
+}
 .login{
     width: 100vh;
     display: flex;
@@ -17,6 +21,7 @@
     /* gap: 50%; */
     height: 50vh;
     align-items: center;
+    flex-shrink: 1;
 }
 .login-button{
     color: white;
@@ -24,9 +29,9 @@
 }
 .login-button:hover{
     color: black;
-    background-color: rgb(151, 151, 151);
+    background-color: rgb(207, 207, 207);
     font-weight: bold;
-    transition: ease-in-out 0.5s;
+    transition: ease-in-out 0.2s;
 }
 .signup-msg{
     color: white;

@@ -101,4 +101,7 @@
     justify-content: left;
     align-items: left;
     margin: 10px 0;
+    flex-grow: 1;
+    min-width: 0;
+    max-width: 100%;
   }
