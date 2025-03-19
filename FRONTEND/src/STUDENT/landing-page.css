@@ -1,0 +1,184 @@
+/* Global Style */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: radial-gradient(circle, rgba(113, 77, 255, 0.2) 0%, rgba(12, 8, 26, 1) 50%);
+  font-family: 'Inter', sans-serif;
+  background-color: #0c081a;
+  overflow-y: scroll;
+}
+/* Ensure Root Container is Centered */
+#root {
+  margin: 0 auto;
+  padding-bottom: 0;
+  max-width: 200vh; /* Adjust based on layout */
+}
+/* -----------------Global Style Ends---------------------- */
+
+/* -----------------Landing Page---------------------- */
+.landingpage-container {
+  width: 100%;
+  /* border-bottom: 2px solid white; */
+  margin: 0 auto;
+  padding: 0 20px;
+  flex-wrap: wrap;
+}
+
+/* Content Header */
+.content-header {
+  
+  position: relative;
+  color: white;
+  text-align: center;
+  margin: auto;
+  padding: 20px;
+  top: 200px;
+  /* border: 2px solid red; */
+}
+
+.content-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  text-shadow: 0px 0px 12px rgba(204, 231, 84, 0.3);
+}
+
+.content-desc {
+  font-size: 1.2rem;
+  margin-top: 50px;
+  font-size: 1.2rem;
+  margin-top: 50px;
+  text-shadow: 0px 0px 12px rgba(100, 231, 111, 0.2);
+}
+
+/* Body Content */
+.content-buttons {
+  gap: 1rem;
+  display: flex;
+  justify-content: center;
+  position: relative;
+  top: 250px;
+  /* border-bottom: 2px solid white; */
+}
+
+.content-buttons a {
+  text-decoration: none;
+  color: white;
+  font-weight: 500;
+  padding: 10px;
+  border-radius: 5px;
+  background: linear-gradient(to right, #714dff, #e151ff);
+  font-size: 1.5rem;
+}
+
+.content-buttons a:hover {
+  color: white;
+  background: linear-gradient(to right, #714dff, #e151ff);
+  opacity: 0.8;
+  transform: scale(1.05);
+  transition: all 0.3s ease-in-out;
+}
+/*-----------------Landing Page Ends---------------------- */
+/* -----------------Introduction---------------------- */
+.content-introduction {
+  position: relative;
+  top: 700px;
+  display: flex;
+  /* justify-content: center; */
+  /* text-align: center; */
+  align-items: center;
+  gap: 5rem;
+  padding: 20px;
+  border-top: 1px solid white;
+  border-bottom: 1px solid white;
+  padding-bottom: 100px;
+  color: white;
+  font-size: 1.5rem;
+  text-shadow: 0px 0px 12px rgba(100, 231, 111, 0.2);
+  width: 100%;
+  /* border: 2px dotted red; */
+}
+
+/* -----------------Carousel---------------------- */
+.carousel-container {
+  width: 100%;
+  position: relative;
+  top: 800px;
+  overflow: hidden;
+  border-bottom: 1px solid white;
+  padding-bottom: 50px;
+}
+.carousel-label{
+  color: white;
+  font-size: 1.5rem;
+  text-align: left;
+  padding: 20px;
+  text-shadow: 0px 0px 12px rgba(100, 231, 111, 0.2);
+}
+
+.slick-list {
+  /* overflow: hidden !important; */
+}
+
+.slick-slide {
+  padding: 0 10px;
+  box-sizing: border-box;
+}
+
+.carousel-slide img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  flex-shrink: 1;
+  
+}
+
+.carousel-slide img:hover {
+  opacity: 0.8;
+  transform: scale(1.05);
+  transition: all 0.3s ease-in-out;
+}
+
+/* -----------------Responsive Fixes---------------------- */
+@media (max-width: 1024px) {
+  .nav-links {
+    gap: 2rem;
+    font-size: 16px;
+  }
+
+  .content-title {
+    font-size: 2rem;
+  }
+
+  .content-body {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .nav-bar {
+    flex-direction: column;
+    height: auto;
+    padding: 10px 0;
+  }
+
+  .nav-links {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .content-introduction {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .carousel-container {
+    top: 100px;
+  }
+}
