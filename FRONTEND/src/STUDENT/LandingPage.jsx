@@ -1,13 +1,12 @@
 import React from "react";
 import "./landing-page.css";
-import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import animationGif from "../assets/animation-loop.gif";
 import MissionSection from "./MissionSection";
 import Carousel from "./Carousel";
-import FeatureCard from "../components/featurecard";
 import Footer from "../components/footer";
+import Navigation from "../components/navigation";
 
 function LandingPage() {
   console.log("LandingPage component rendered!");
@@ -24,6 +23,7 @@ function LandingPage() {
 
   return (
     <div className="landingpage-container">
+      <Navigation/>
       <div id="header-container">
         <div className="content-header">
           <h1 className="content-title">
