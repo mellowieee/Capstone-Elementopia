@@ -1,4 +1,6 @@
-/* Global Style */
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Orbitron:wght@700&family=Montserrat:wght@400;600&display=swap');
+
+/* ========== Global Styles ========== */
 * {
   margin: 0;
   padding: 0;
@@ -6,181 +8,240 @@
 }
 
 body {
-  background: radial-gradient(
-    circle,
-    rgba(113, 77, 255, 0.2) 0%,
-    rgba(12, 8, 26, 1) 50%
-  );
-  font-family: "Inter", sans-serif;
+  background: radial-gradient(circle, rgba(113, 77, 255, 0.2) 0%, rgba(12, 8, 26, 1) 50%);
+  font-family: "Montserrat", sans-serif;
   background-color: #0c081a;
-  overflow-y: scroll;
+  overflow-x: hidden;
+  color: white;
 }
-/* Ensure Root Container is Centered */
+
+/* Ensures content stays centered */
 #root {
   margin: 0 auto;
   padding-bottom: 0;
-  max-width: 200vh; /* Adjust based on layout */
+  max-width: 1600px;
 }
-/* -----------------Global Style Ends---------------------- */
 
-/* -----------------Landing Page---------------------- */
+/* ========== Landing Page ========== */
 .landingpage-container {
   width: 100%;
-  /* border-bottom: 2px solid white; */
+  height: auto;
   margin: 0 auto;
   padding: 0 20px;
+}
+
+/* ========== Header Section ========== */
+#header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   flex-wrap: wrap;
+  width: 100%;
+  padding: 80px 0;
+  margin-top: 50px;
 }
 
-/* Content Header */
 .content-header {
-  position: relative;
-  color: white;
+  width: 50%;
   text-align: center;
-  margin: auto;
-  padding: 20px;
-  top: 200px;
-  /* border: 2px solid red; */
 }
 
-.content-title {
-  font-size: 2.5rem;
-  font-weight: 800;
-  text-shadow: 0px 0px 12px rgba(204, 231, 84, 0.3);
+.content-header h1 {
+  font-size: 3.5rem;
+  font-weight: bold;
+  font-family: 'Orbitron', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.8);
+  color: white;
 }
 
-.content-desc {
-  font-size: 1.2rem;
-  margin-top: 50px;
-  font-size: 1.2rem;
-  margin-top: 50px;
-  text-shadow: 0px 0px 12px rgba(100, 231, 111, 0.2);
+
+#chemStruc {
+  font-family: 'Press Start 2P', cursive;
+  color: #ff00ff;
+  text-shadow: 4px 4px 10px rgba(255, 0, 255, 0.7);
+  font-size: 4rem;
 }
 
-/* Body Content */
+#play {
+  font-family: 'Press Start 2P', cursive;
+  color: #ffcc00;
+  text-shadow: 4px 4px 10px rgba(255, 204, 0, 0.7);
+  font-size: 4rem;
+}
+
+
 .content-buttons {
-  gap: 1rem;
   display: flex;
   justify-content: center;
-  position: relative;
-  top: 250px;
-  /* border-bottom: 2px solid white; */
+  gap: 15px;
+  margin-top: 30px;
 }
 
 .content-buttons a {
   text-decoration: none;
+  padding: 12px 20px;
+  background: linear-gradient(to right, #714dff, #e151ff);
   color: white;
   font-weight: 500;
-  padding: 10px;
   border-radius: 5px;
-  background: linear-gradient(to right, #714dff, #e151ff);
   font-size: 1.5rem;
+  transition: all 0.3s ease-in-out;
 }
 
 .content-buttons a:hover {
-  color: white;
-  background: linear-gradient(to right, #714dff, #e151ff);
   opacity: 0.8;
   transform: scale(1.05);
-  transition: all 0.3s ease-in-out;
 }
-/*-----------------Landing Page Ends---------------------- */
-/* -----------------Introduction---------------------- */
+
+
+#gif-container {
+  width: 45%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.gif-image {
+  width: 100%;
+  max-width: 500px;
+  height: auto;
+  border-radius: 10px;
+}
+
+/* ========== Introduction Section ========== */
 .content-introduction {
   position: relative;
-  top: 700px;
+  top: 50px;
   display: flex;
-  /* justify-content: center; */
-  /* text-align: center; */
+  justify-content: center;
   align-items: center;
-  gap: 5rem;
-  padding: 20px;
-  border-top: 1px solid white;
-  border-bottom: 1px solid white;
-  padding-bottom: 100px;
-  color: white;
-  font-size: 1.5rem;
-  text-shadow: 0px 0px 12px rgba(100, 231, 111, 0.2);
+  flex-direction: column;
+  text-align: center;
+  padding: 80px 20px;
+  border-top: 2px solid rgba(255, 255, 255, 0.3);
+  border-bottom: 2px solid rgba(255, 255, 255, 0.3);
   width: 100%;
-  /* border: 2px dotted red; */
+  opacity: 0;
+  transform: translateY(50px);
+  transition: opacity 1s ease-out, transform 1s ease-out;
 }
 
-/* -----------------Carousel---------------------- */
+
+.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.content-intro-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 3rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: #00ffcc;
+  text-shadow: 0px 0px 15px rgba(0, 255, 204, 0.8);
+}
+
+.content-intro-desc {
+  font-size: 1.5rem;
+  font-weight: 400;
+  max-width: 800px;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.6;
+}
+
+/* ========== Carousel ========== */
 .carousel-container {
-  width: 100%;
+  width: 90%;
+  margin: auto;
   position: relative;
-  top: 800px;
-  overflow: hidden;
-  border-bottom: 1px solid white;
-  padding-bottom: 50px;
+  padding: 50px 0;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+  text-align: center;
 }
+
 .carousel-label {
-  color: white;
-  font-size: 1.5rem;
-  text-align: left;
-  padding: 20px;
-  text-shadow: 0px 0px 12px rgba(100, 231, 111, 0.2);
-}
-
-.slick-list {
-  /* overflow: hidden !important; */
-}
-
-.slick-slide {
-  padding: 0 10px;
-  box-sizing: border-box;
+  font-family: 'Orbitron', sans-serif;
+  color: #00ffcc;
+  font-size: 2rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-shadow: 0px 0px 12px rgba(0, 255, 204, 0.8);
+  margin-bottom: 20px;
 }
 
 .carousel-slide img {
   width: 100%;
-  height: auto;
-  border-radius: 10px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-  flex-shrink: 1;
+  height: 250px;
+  object-fit: cover;
+  border-radius: 15px;
+  box-shadow: 0px 0px 15px rgba(0, 255, 204, 0.7);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .carousel-slide img:hover {
-  opacity: 0.8;
-  transform: scale(1.05);
-  transition: all 0.3s ease-in-out;
+  transform: scale(1.1);
+  box-shadow: 0px 0px 20px rgba(255, 204, 0, 0.9);
 }
 
-/* -----------------Responsive Fixes---------------------- */
-@media (max-width: 1024px) {
-  .nav-links {
-    gap: 2rem;
-    font-size: 16px;
-  }
-
-  .content-title {
-    font-size: 2rem;
-  }
-
-  .content-body {
-    flex-direction: column;
-    align-items: center;
-  }
+/* ========== Footer ========== */
+.footer-container {
+  width: 100%;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.9);
+  text-align: center;
 }
 
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  max-width: 1200px;
+  margin: auto;
+  padding: 20px;
+}
+
+.footer-logo {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.5rem;
+  font-weight: bold;
+  background: linear-gradient(to right, #714dff, #e151ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.footer-links {
+  display: flex;
+  gap: 15px;
+}
+
+.footer-links a {
+  color: #bbb;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: color 0.3s ease-in-out;
+}
+
+.footer-links a:hover {
+  color: white;
+}
+
+/* ========== Responsive Design ========== */
 @media (max-width: 768px) {
-  .nav-bar {
-    flex-direction: column;
-    height: auto;
-    padding: 10px 0;
-  }
-
-  .nav-links {
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-  }
-
-  .content-introduction {
+  #header-container {
     flex-direction: column;
     text-align: center;
   }
 
-  .carousel-container {
-    top: 100px;
+  .content-header, #gif-container {
+    width: 90%;
+  }
+
+  .footer {
+    flex-direction: column;
+    text-align: center;
   }
 }
