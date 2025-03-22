@@ -14,10 +14,14 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
+import home from "../assets/home.png";
+import room from "../assets/room.png";
+import career from "../assets/career.png";
+import discovery from "../assets/discovery.png";
+import sandBox from "../assets/sandBox.png";
+import gameRoom from "../assets/gameRoom.png";
 
-const drawerWidth = 240;
+const drawerWidth = 180;
 const closedWidth = 60;
 
 const Drawer = styled(MuiDrawer)(({ theme, open }) => ({
@@ -37,6 +41,15 @@ const Drawer = styled(MuiDrawer)(({ theme, open }) => ({
     color: "#fff",
   },
 }));
+
+const menuItems = [
+  { text: "Home", icon: home },
+  { text: "Room", icon: room },
+  { text: "Career", icon: career },
+  { text: "Discovery", icon: discovery },
+  { text: "Sandbox", icon: sandBox },
+  { text: "Game Room", icon: gameRoom },
+];
 
 const Sidebar = ({ open, handleDrawerOpen, handleDrawerClose }) => {
   return (
@@ -59,13 +72,13 @@ const Sidebar = ({ open, handleDrawerOpen, handleDrawerClose }) => {
       <Divider sx={{ borderColor: "#555" }} />
 
       <List>
-        {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-          <ListItem key={text} disablePadding sx={{ display: "block" }}>
+        {menuItems.map((item) => (
+          <ListItem key={item.text} disablePadding sx={{ display: "block" }}>
             <ListItemButton sx={{ justifyContent: open ? "initial" : "center", px: 2.5 }}>
               <ListItemIcon sx={{ minWidth: 0, justifyContent: "center", mr: open ? 2 : "auto", color: "#fff" }}>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                <img src={item.icon} alt={item.text} width={24} height={24} />
               </ListItemIcon>
-              <ListItemText primary={text} sx={{ opacity: open ? 1 : 0, color: "#fff" }} />
+              <ListItemText primary={item.text} sx={{ opacity: open ? 1 : 0, color: "#fff" }} />
             </ListItemButton>
           </ListItem>
         ))}

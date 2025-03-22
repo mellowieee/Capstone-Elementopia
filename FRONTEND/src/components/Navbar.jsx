@@ -20,7 +20,7 @@ const Navbar = ({ open }) => {
       sx={{
         bgcolor: "#000000",
         zIndex: 1300,
-        width: `calc(100% - ${open ? "240px" : "60px"})`,
+        width: `calc(100% - ${open ? "180px" : "60px"})`,
         transition: "width 0.3s ease",
       }}
     >
