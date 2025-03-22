@@ -12,6 +12,7 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
+import { Link } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import home from "../assets/home.png";
@@ -43,12 +44,12 @@ const Drawer = styled(MuiDrawer)(({ theme, open }) => ({
 }));
 
 const menuItems = [
-  { text: "Home", icon: home },
-  { text: "Room", icon: room },
-  { text: "Career", icon: career },
-  { text: "Discovery", icon: discovery },
-  { text: "Sandbox", icon: sandBox },
-  { text: "Game Room", icon: gameRoom },
+  { text: "Home", icon: home, path: "/student-home-page" },
+  { text: "Room", icon: room, path: "/student-home-page/room" },
+  { text: "Career", icon: career, path: "/student-home-page/student-career-page" },
+  { text: "Discovery", icon: discovery, path: "/student-home-page/discovery" },
+  { text: "Sandbox", icon: sandBox, path: "/student-home-page/sandbox" },
+  { text: "Game Room", icon: gameRoom, path: "/student-home-page/game-room" },
 ];
 
 const Sidebar = ({ open, handleDrawerOpen, handleDrawerClose }) => {
@@ -74,7 +75,7 @@ const Sidebar = ({ open, handleDrawerOpen, handleDrawerClose }) => {
       <List>
         {menuItems.map((item) => (
           <ListItem key={item.text} disablePadding sx={{ display: "block" }}>
-            <ListItemButton sx={{ justifyContent: open ? "initial" : "center", px: 2.5 }}>
+            <ListItemButton component={Link} to={item.path} sx={{ justifyContent: open ? "initial" : "center", px: 2.5 }}>
               <ListItemIcon sx={{ minWidth: 0, justifyContent: "center", mr: open ? 2 : "auto", color: "#fff" }}>
                 <img src={item.icon} alt={item.text} width={24} height={24} />
               </ListItemIcon>
