@@ -27,7 +27,7 @@ const RegisterCard = () => {
         const userData = { firstname, lastname, email, username, password, role };
 
         try {
-            const response = await fetch("http://localhost:8080/api/users/register", {
+            const response = await fetch("http://localhost:8080/api/user/register", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(userData),
