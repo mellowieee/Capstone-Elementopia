@@ -3,11 +3,11 @@ package com.elementopia.database.util;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import java.util.Base64;
 import java.util.Date;
@@ -19,23 +19,17 @@ import java.util.function.Function;
 public class JwtUtil {
 
     @Value("${jwt.secret:}") // Load from environment variable if set
-    private String SECRET_KEY;
+    private String secretKeyBase64;
+
+    private SecretKey secretKey;
 
     @PostConstruct
     public void init() {
-        if (SECRET_KEY.isEmpty()) {
-            SECRET_KEY = generateSecretKey(); // Generate dynamically if no secret is defined
-        }
-    }
-
-    private String generateSecretKey() {
-        try {
-            KeyGenerator keyGen = KeyGenerator.getInstance("HmacSHA256");
-            keyGen.init(256); // 256-bit key for HS256
-            SecretKey secretKey = keyGen.generateKey();
-            return Base64.getEncoder().encodeToString(secretKey.getEncoded());
-        } catch (Exception e) {
-            throw new IllegalStateException("Error generating JWT secret key", e);
+        if (secretKeyBase64 == null || secretKeyBase64.isEmpty()) {
+            secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256); // Secure key generation
+        } else {
+            byte[] decodedKey = Base64.getDecoder().decode(secretKeyBase64);
+            secretKey = Keys.hmacShaKeyFor(decodedKey);
         }
     }
 
@@ -54,7 +48,7 @@ public class JwtUtil {
 
     private Claims extractAllClaims(String token) {
         return Jwts.parserBuilder()
-                .setSigningKey(SECRET_KEY)
+                .setSigningKey(secretKey)
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
@@ -74,8 +68,8 @@ public class JwtUtil {
                 .setClaims(claims)
                 .setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
-                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // 10 hours expiration
+                .signWith(secretKey)
                 .compact();
     }
 

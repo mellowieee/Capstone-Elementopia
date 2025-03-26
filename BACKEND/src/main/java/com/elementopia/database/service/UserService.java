@@ -100,6 +100,14 @@ public class UserService {
     }
 
     public UserEntity registerUser(UserEntity user) {
+        if (user.getFirstName() == null || user.getFirstName().trim().isEmpty() ||
+                user.getLastName() == null || user.getLastName().trim().isEmpty() ||
+                user.getEmail() == null || user.getEmail().trim().isEmpty() ||
+                user.getUsername() == null || user.getUsername().trim().isEmpty() ||
+                user.getPassword() == null || user.getPassword().trim().isEmpty() ||
+                user.getRole() == null || user.getRole().trim().isEmpty()) {
+            throw new RuntimeException("All fields are required!");
+        }
         if (uRepo.findByUsername(user.getUsername()).isPresent()) {
             throw new RuntimeException("Username already taken!");
         }
@@ -131,13 +139,21 @@ public class UserService {
     // Login User
     public String loginUser(String username, String password) {
         UserEntity user = findByUsername(username);
+
         if (user == null) {
             throw new RuntimeException("User not found!");
         }
+
+        System.out.println("Username: " + username);
+        System.out.println("Password: " + password);
+        System.out.println("Stored Hashed Password: " + user.getPassword());
+
         if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new RuntimeException("Invalid password!");
         }
+
         return jwtUtil.generateToken(username);
     }
+
 
 }
