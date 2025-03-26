@@ -10,11 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-<<<<<<< HEAD
-    "frontend": "file:",
-=======
     "axios": "^1.8.4",
->>>>>>> 51e08bf344eba4cd8ffbe5c14df571ca787e4e20
+    "frontend": "file:",
     "lucide-react": "^0.479.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

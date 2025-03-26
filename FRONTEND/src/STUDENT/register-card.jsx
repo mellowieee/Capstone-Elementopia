@@ -34,21 +34,12 @@ const RegisterCard = ({ onRegisterSuccess }) => {
       return;
     }
 
-<<<<<<< HEAD
-        try {
-            const response = await fetch("http://localhost:8080/api/user/register", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(userData),
-            });
-=======
     if (password !== confirmPassword) {
       setMessage("Passwords do not match!");
       return;
     }
->>>>>>> 51e08bf344eba4cd8ffbe5c14df571ca787e4e20
 
-    // Password validation: At least 8 chars, 1 uppercase, 1 number, 1 special char beri nays
+    // Password validation: At least 8 chars, 1 uppercase, 1 number, 1 special char
     const passwordRegex =
       /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
     if (!passwordRegex.test(password)) {
@@ -59,8 +50,8 @@ const RegisterCard = ({ onRegisterSuccess }) => {
     }
 
     const userData = {
-      firstName: firstname.trim().toLowerCase(),
-      lastName: lastname.trim().toLowerCase(),
+      firstName: firstname.trim(),
+      lastName: lastname.trim(),
       email: email.trim(),
       username: username.trim().toLowerCase(),
       password,
