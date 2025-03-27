@@ -29,7 +29,7 @@ export default function Login() {
                 setMessage("Login successful!");
                 // Redirect user after successful login
                 setTimeout(() => {
-                    window.location.href = "/dashboard"; // Change this to the actual dashboard page
+                    window.location.href = "/student-home-page"; // Change this to the actual dashboard page
                 }, 1000);
             } else {
                 setMessage(result); // Display error message from the backend
