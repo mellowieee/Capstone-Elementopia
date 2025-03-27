@@ -1,42 +1,35 @@
 import React, { useState } from "react";
-import { Box, Typography } from "@mui/material";
-import { styled } from "@mui/material/styles";
+import { Box, Grid } from "@mui/material";
 import { Outlet, useLocation } from "react-router-dom";
 import Navbar from "../components/NavBar";
 import Sidebar from "../components/Sidebar";
-
-const DrawerHeader = styled("div")(({ theme }) => ({
-  ...theme.mixins.toolbar,
-}));
+import DailyChallengeCard from "../components/Student Components/DailyChallengeCard";
+import LessonCards from "../components/Student Components/LessonCards";
+import AchievementsCard from "../components/Student Components/AchievementsCard";
+import DiscoveriesCard from "../components/Student Components/DiscoveriesCard";
 
 const StudentHomePage = () => {
   const [open, setOpen] = useState(false);
-  const location = useLocation(); // Get the current path
-
-  const handleDrawerOpen = () => setOpen(true);
-  const handleDrawerClose = () => setOpen(false);
+  const location = useLocation();
 
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box sx={{ display: "flex", bgcolor: "#121212", color: "white", minHeight: "100vh", width: "100vw" }}>
       <Navbar open={open} />
-      <Sidebar open={open} handleDrawerOpen={handleDrawerOpen} handleDrawerClose={handleDrawerClose} />
+      <Sidebar open={open} handleDrawerOpen={() => setOpen(true)} handleDrawerClose={() => setOpen(false)} />
 
-      <Box component="main" sx={{ flexGrow: 1, p: 3, transition: "margin 0.3s ease", marginLeft: open ? "180px" : "60px" }}>
-        <DrawerHeader />
-
-        {/* Only show homepage content if NOT inside /student-home-page/room */}
+      <Box component="main" sx={{ flexGrow: 1, p: 3, marginLeft: open ? "180px" : "60px", width: "100%", marginTop: "80px" }}>
         {location.pathname === "/student-home-page" && (
-          <>
-            <Typography sx={{ marginBottom: 2 }}>
-              Welcome to Student Home Page
-            </Typography>
-            <Typography sx={{ marginBottom: 2 }}>
-              idk what to do here!!
-            </Typography>
-          </>
+          <Grid container spacing={2}>
+            <Grid item xs={12} md={8}>
+              <DailyChallengeCard />
+              <LessonCards />
+            </Grid>
+            <Grid item xs={12} md={4}>
+              <DiscoveriesCard />
+              <AchievementsCard />
+            </Grid>
+          </Grid>
         )}
-
-        {/* Outlet for Nested Routes */}
         <Outlet />
       </Box>
     </Box>
