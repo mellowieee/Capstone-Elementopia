@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { Menu } from 'lucide-react';
-import './navigation.css';
+import React, { useState } from "react";
+import { Menu } from "lucide-react";
+import "./navigation.css";
 import LoginCard from "../STUDENT/login-card";
 import SignupCard from "../STUDENT/register-card";
 
@@ -19,14 +19,13 @@ export default function Navigation() {
   return (
     <div className="landingpage-container">
       <nav className="nav-bar">
-
         {/* Burger Menu Button */}
         <button className="burger-menu" onClick={() => setIsOpen(!isOpen)}>
           {isOpen ? <X size={32} /> : <Menu size={32} />}
-        </button>        
+        </button>
 
         {/* Dropdown Menu (only appears when burger is clicked) */}
-        <div className={`dropdown-menu ${isOpen ? 'open' : ''}`}>
+        <div className={`dropdown-menu ${isOpen ? "open" : ""}`}>
           <a href="/Dashboard">Dashboard</a>
           <a href="/Custom-Room">Custom Room</a>
           <a href="/Achievements">Achievements</a>
@@ -36,7 +35,9 @@ export default function Navigation() {
         </div>
 
         {/* Left Side - Logo */}
-        <a className="logo" href="/">ELEMENTOPIA</a>
+        <a className="logo" href="/">
+          ELEMENTOPIA
+        </a>
 
         {/* Center Navigation Links - Hidden when burger is used */}
         <div className="nav-links">
@@ -47,8 +48,12 @@ export default function Navigation() {
 
         {/* Right Side - Login & Sign Up */}
         <div className="auth-links">
-        <button className='login-btn' onClick={() => openPopup("login")}>Login</button>
-        <button className="signup-btn" onClick={() => openPopup("signup")}>Sign Up</button>
+          <button className="login-btn" onClick={() => openPopup("login")}>
+            Login
+          </button>
+          <button className="signup-btn" onClick={() => openPopup("signup")}>
+            Sign Up
+          </button>
         </div>
       </nav>
 
@@ -56,7 +61,11 @@ export default function Navigation() {
         <div className="popup-overlay" onClick={closePopup}>
           <div className="popup-content" onClick={(e) => e.stopPropagation()}>
             {/* <button className="close-btn" onClick={closePopup}>✖</button> */}
-            {popupType === "login" ? <LoginCard /> : <SignupCard />}
+            {popupType === "login" ? (
+              <LoginCard />
+            ) : (
+              <SignupCard onRegisterSuccess={closePopup} />
+            )}
           </div>
         </div>
       )}
