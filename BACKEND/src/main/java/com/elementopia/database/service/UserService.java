@@ -12,8 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.naming.NameNotFoundException;
-import java.time.LocalDateTime;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class UserService {
@@ -55,36 +54,33 @@ public class UserService {
 
     // Update User By ID
     public UserEntity updateUser(Long id, UserEntity newUserDetails) {
-        UserEntity user = new UserEntity();
-        try {
-            user = uRepo.findById(id).get();
+        UserEntity user = uRepo.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("User with ID " + id + " not found!"));
 
-            user.setUsername(newUserDetails.getUsername());
-            user.setPassword(newUserDetails.getPassword());
-            user.setEmail(newUserDetails.getEmail());
-            user.setFirstName(newUserDetails.getFirstName());
-            user.setLastName(newUserDetails.getLastName());
-        } catch (Exception e) {
-            throw new NameNotFoundException("User with ID " + id + " not found!");
-        } finally {
-            return uRepo.save(user);
+        if (newUserDetails.getUsername() != null) user.setUsername(newUserDetails.getUsername());
+        if (newUserDetails.getEmail() != null) user.setEmail(newUserDetails.getEmail());
+        if (newUserDetails.getFirstName() != null) user.setFirstName(newUserDetails.getFirstName());
+        if (newUserDetails.getLastName() != null) user.setLastName(newUserDetails.getLastName());
+
+        if (newUserDetails.getPassword() != null && !newUserDetails.getPassword().isBlank()) {
+            user.setPassword(passwordEncoder.encode(newUserDetails.getPassword()));
         }
+
+        return uRepo.save(user);
     }
+
 
     // Update Profile
     public UserEntity updateProfile(Long id, UserEntity newUserDetails) {
-        UserEntity user = new UserEntity();
-        try {
-            user = uRepo.findById(id).get();
+        UserEntity user = uRepo.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("User with ID " + id + " not found!"));
 
-            user.setUsername(newUserDetails.getUsername());
-            user.setFirstName(newUserDetails.getFirstName());
-            user.setLastName(newUserDetails.getLastName());
-        } catch (Exception e) {
-            throw new NameNotFoundException("User with ID " + id + " not found!");
-        } finally {
-            return uRepo.save(user);
-        }
+        if (newUserDetails.getUsername() != null) user.setUsername(newUserDetails.getUsername());
+        if (newUserDetails.getFirstName() != null) user.setFirstName(newUserDetails.getFirstName());
+        if (newUserDetails.getLastName() != null) user.setLastName(newUserDetails.getLastName());
+        if (newUserDetails.getEmail() != null) user.setEmail(newUserDetails.getEmail());
+
+        return uRepo.save(user);
     }
 
     // Delete User By ID
