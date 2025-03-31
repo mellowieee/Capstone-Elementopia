@@ -162,7 +162,6 @@ body {
 }
 
 .carousel-label {
-<<<<<<< HEAD
   color: white;
   font-size: 1.5rem;
   text-align: left;
@@ -176,7 +175,6 @@ body {
 .slick-slide {
   padding: 0 10px;
   box-sizing: border-box;
-=======
   font-family: 'Orbitron', sans-serif;
   color: #00ffcc;
   font-size: 2rem;
@@ -184,7 +182,6 @@ body {
   letter-spacing: 2px;
   text-shadow: 0px 0px 12px rgba(0, 255, 204, 0.8);
   margin-bottom: 20px;
->>>>>>> 713a84a540dacc7a5fa0cd9af941d73274d9606f
 }
 
 .carousel-slide img {

@@ -19,17 +19,10 @@ export default function Login({ onLoginSuccess }) {
     }
 
     try {
-      const response = await UserService.loginUser(
-        username.toLowerCase(),
-        password
-      );
+      const response = await UserService.loginUser(username.toLowerCase(), password);
 
-<<<<<<< HEAD
       if (response && response.token) {
         // Assuming `response.token` contains a JWT or session token
-=======
-      if (response) {
->>>>>>> c86b59f5a44db58bcd910fc19b0c61ceb1cdb006
         setMessage("Login successful! Redirecting...");
 
         // Save user session (Spring Security requirement)
@@ -37,7 +30,7 @@ export default function Login({ onLoginSuccess }) {
 
         setTimeout(() => {
           if (onLoginSuccess) onLoginSuccess();
-          navigate("/student-home-page"); // Change to the actual dashboard page
+          navigate("/student-home-page"); // Redirect to the actual dashboard page
         }, 1500);
       } else {
         setMessage(response.message || "Invalid username or password.");
