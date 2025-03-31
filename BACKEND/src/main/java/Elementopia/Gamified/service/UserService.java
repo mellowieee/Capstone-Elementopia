@@ -47,8 +47,8 @@ public class UserService {
 
     public String loginUser(String username, String password) {
         Optional<UserEntity> userOpt = userRepository.findByUsername(username);
-
         if (userOpt.isPresent()) {
+            
             UserEntity user = userOpt.get();
             if (passwordEncoder.matches(password, user.getPassword())) { // Check hashed password
                 return "Login successful!";
