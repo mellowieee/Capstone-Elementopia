@@ -24,38 +24,23 @@ export default function Login({ onLoginSuccess }) {
         password
       );
 
-<<<<<<< HEAD
-      if (response) {
+      if (response && response.token) {
+        // Assuming `response.token` contains a JWT or session token
         setMessage("Login successful! Redirecting...");
-=======
-            if (response.ok) {
-                setMessage("Login successful!");
-                // Redirect user after successful login
-                setTimeout(() => {
-                    window.location.href = "/student-home-page"; // Change this to the actual dashboard page
-                }, 1000);
-            } else {
-                setMessage(result); // Display error message from the backend
-            }
-        } catch (error) {
-            console.error("Fetch error:", error);
-            setMessage("Login failed. Please try again.");
-        }
-    };
->>>>>>> 713a84a540dacc7a5fa0cd9af941d73274d9606f
 
-        // Save user session (tungod sa Spring Security :3)
+        // Save user session (Spring Security requirement)
         sessionStorage.setItem("user", JSON.stringify(response));
 
         setTimeout(() => {
-          onLoginSuccess && onLoginSuccess();
-          navigate("/");
+          if (onLoginSuccess) onLoginSuccess();
+          navigate("/student-home-page"); // Change to the actual dashboard page
         }, 1500);
       } else {
-        setMessage("Invalid username or password.");
+        setMessage(response.message || "Invalid username or password.");
       }
     } catch (error) {
-      setMessage("Login failed: " + (error.response?.data || error.message));
+      console.error("Login error:", error);
+      setMessage("Login failed. Please try again.");
     }
   };
 
