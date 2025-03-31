@@ -13,7 +13,7 @@ public class StudentEntity {
     private Long studentId;
 
     @OneToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "userId", unique = true, nullable = false)
+    @JoinColumn(name = "userId", referencedColumnName = "userId", unique = true, nullable = false)
     @JsonBackReference
     private UserEntity user;
 
@@ -23,4 +23,3 @@ public class StudentEntity {
     @Column(name = "last_name")
     private String lastName;
 }
-

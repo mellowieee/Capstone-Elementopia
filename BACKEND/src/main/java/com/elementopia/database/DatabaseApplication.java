@@ -1,14 +1,13 @@
-package Elementopia.Gamified;
+package com.elementopia.database;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class GamifiedApplication {
+public class DatabaseApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(GamifiedApplication.class, args);
-		System.out.println("Ok");
+		SpringApplication.run(DatabaseApplication.class, args);
 	}
 
 }

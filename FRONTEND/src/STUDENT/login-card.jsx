@@ -24,8 +24,12 @@ export default function Login({ onLoginSuccess }) {
         password
       );
 
+<<<<<<< HEAD
       if (response && response.token) {
         // Assuming `response.token` contains a JWT or session token
+=======
+      if (response) {
+>>>>>>> c86b59f5a44db58bcd910fc19b0c61ceb1cdb006
         setMessage("Login successful! Redirecting...");
 
         // Save user session (Spring Security requirement)
