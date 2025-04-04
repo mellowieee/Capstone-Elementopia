@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Stage, Layer, Circle, Text, Line } from "react-konva";
 import { Box, Typography, Button, ToggleButton } from "@mui/material";
 import ElementTable from "./ElementTable";
+import { askAI } from "../../utils/ai";
 
 const initialAtoms = [];
 const moleculeCombinations = {
@@ -10,26 +11,26 @@ const moleculeCombinations = {
   "CH4": ["C", "H", "H", "H", "H"],
 };
 
+
 const ChemistrySimulation = () => {
   const [atoms, setAtoms] = useState(initialAtoms);
   const [selectedElement, setSelectedElement] = useState("H");
   const [moleculeOutput, setMoleculeOutput] = useState("");
   const [eraseMode, setEraseMode] = useState(false);
+  const apiKey = import.meta.env.VITE_OPENAI_API_KEY;
+
 
   useEffect(() => {
     checkMolecule();
   }, [atoms]);
-
-  const checkMolecule = () => {
-    const elements = [...atoms.map((atom) => atom.element)].sort().join("");
-    for (const [molecule, composition] of Object.entries(moleculeCombinations)) {
-      if ([...composition].sort().join("") === elements) { 
-        setMoleculeOutput(molecule);
-        return;
-      }
-    }
-    setMoleculeOutput("");
+  
+  const checkMolecule = async () => {
+    const elements = atoms.map((atom) => atom.element);
+    const result = await askAI(elements, apiKey); 
+    setMoleculeOutput(result);
   };
+  
+  
 
   const handleStageClick = (e) => {
     if (!eraseMode) {
@@ -170,24 +171,10 @@ const ChemistrySimulation = () => {
         </Button>
       </Box>
       </Box>
-      <Typography variant="h6" sx={{ color: "#ffcc00", marginTop: 2, position: "absolute", bottom: "300px", right: "120px",width: "360px" }}>
-  {moleculeOutput && `Formed: ${moleculeOutput}`}
-  {moleculeOutput === "H2O" && (
-    <Typography variant="h6" sx={{fontSize: ".9rem"}}>
-      <span style={{ fontWeight: "bold"}}>Composition:</span>
-      <br />
-      Each water molecule consists of one oxygen atom and two hydrogen atoms, connected by covalent bonds. 
-      <br />
-      <span style={{ fontWeight: "bold"}}>States of Matter:</span>
-      <br />
-      Water can exist in three states: liquid, solid (ice), and gas (water vapor or steam). 
-      <br />
-      <span style={{ fontWeight: "bold"}}>Importance: </span>
-      <br />
-      Water is vital for all known forms of life, acting as a solvent and playing a crucial role in various biological processes. 
-    </Typography>
-  )}
+      <Typography variant="h6" sx={{ color: moleculeOutput.startsWith("Molecule") ? "#ffcc00" : "red", marginTop: 2 }}>
+  {moleculeOutput}
 </Typography>
+
 
       
     </Box>
