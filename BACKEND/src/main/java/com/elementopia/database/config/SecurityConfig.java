@@ -57,7 +57,11 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/api/user/register",
                                 "/api/user/login",
-                                "/api/user/current-user"
+                                "/api/user/current-user",
+                                "/api/elements/",
+                                "/api/achievementTab/",
+                                "/api/discoveries/",
+                                "/api/achievements/"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
