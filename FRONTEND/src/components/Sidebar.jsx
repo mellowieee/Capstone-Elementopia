@@ -42,7 +42,6 @@ const Drawer = styled(MuiDrawer)(({ theme, open }) => ({
     color: "#fff",
   },
 }));
-
 const menuItems = [
   { text: "Home", icon: home, path: "/student-home-page" },
   { text: "Room", icon: room, path: "/student-home-page/room" },
@@ -52,8 +51,11 @@ const menuItems = [
   { text: "Game Room", icon: gameRoom, path: "/student-home-page/game-room" },
 ];
 
+
 const Sidebar = ({ open, handleDrawerOpen, handleDrawerClose }) => {
+  
   return (
+    
     <Drawer variant="permanent" open={open}>
       <Toolbar sx={{ display: "flex", justifyContent: open ? "space-between" : "center", paddingX: 2 }}>
         {open ? (

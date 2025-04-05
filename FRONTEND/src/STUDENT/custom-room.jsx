@@ -5,12 +5,15 @@ import { useState } from "react"
 import { Users, BookOpen, Plus, Search, Beaker, Edit, Trash, Globe, Lock, X } from "lucide-react"
 // import { CreateLaboratoryModal } from "@/components/create-laboratory-modal"
 import "./custom-room.css"
+import Navbar from '../components/Navbar';
+import Sidebar from '../components/Sidebar';
 
 export default function CustomRoomView() {
-  // const router = useRouter()
+
   const [searchQuery, setSearchQuery] = useState("")
   const [createLabModalOpen, setCreateLabModalOpen] = useState(false)
   const [myLabsModalOpen, setMyLabsModalOpen] = useState(false)
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   // Mock data for public laboratories
   const publicLaboratories = [
@@ -85,9 +88,16 @@ export default function CustomRoomView() {
     //join the laboratory
     router.push(`/dashboard/laboratory/${labId}`)
   }
-
+ 
   return (
+
     <div className="custom-room-container">
+            <Sidebar 
+              open={drawerOpen} 
+              handleDrawerOpen={() => setDrawerOpen(true)} 
+              handleDrawerClose={() => setDrawerOpen(false)} 
+            />
+              <Navbar />
       <div className="custom-room-header">
         <div className="custom-room-title-container">
           <h1 className="custom-room-title">Custom Laboratories</h1>
@@ -156,7 +166,6 @@ export default function CustomRoomView() {
           </div>
         </div>
       </div>
-
       {/* Public Laboratories */}
       <div className="labs-container">
         <div className="labs-header">
