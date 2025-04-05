@@ -16,13 +16,8 @@
     "@mui/icons-material": "^6.4.8",
     "@mui/material": "^6.4.8",
     "@mui/styled-engine-sc": "^6.4.6",
-<<<<<<< HEAD
     "axios": "^1.8.4",
     "frontend": "file:",
-=======
-    "frontend": "file:",
-    "axios": "^1.8.4",
->>>>>>> c86b59f5a44db58bcd910fc19b0c61ceb1cdb006
     "lucide-react": "^0.479.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
