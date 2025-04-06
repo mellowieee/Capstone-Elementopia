@@ -1,21 +1,24 @@
 import React, { useState } from "react";
-import { Box, Grid } from "@mui/material";
+import { Box, Grid, Button } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import Navbar from "../components/NavBar";
 import Sidebar from "../components/Sidebar";
+import ElementMatchGame from "../components/MiniGames/ElementMatchGame"; // Import your mini-game here
+
+// Assets
 import card1 from "../assets/card1.jpg";
 import card2 from "../assets/card2.jpg";
 import card3 from "../assets/card3.jpg";
 import card4 from "../assets/card4.jpg";
 import card5 from "../assets/card5.jpg";
 
-import "./StudentGameRoomPage.css"; // Import the CSS file
+// Styles
+import "./StudentGameRoomPage.css";
 
 const DrawerHeader = styled("div")(({ theme }) => ({
   ...theme.mixins.toolbar,
 }));
 
-// Array of cards with different background images and text
 const gameCards = [
   { text: "Build the Atom", image: card1 },
   { text: "Elemental Match", image: card2 },
@@ -26,13 +29,13 @@ const gameCards = [
 
 const StudentGameRoomPage = () => {
   const [open, setOpen] = useState(false);
-  const [selected, setSelected] = useState(null);
+  const [selectedGame, setSelectedGame] = useState(null);
 
   const handleDrawerOpen = () => setOpen(true);
   const handleDrawerClose = () => setOpen(false);
 
   return (
-    <Box sx={{ display: "flex", backgroundColor: "black", minHeight: "100vh" }}>
+    <Box /*sx={{ display: "flex", backgroundColor: "black", minHeight: "100vh" }}*/>
       <Navbar open={open} />
       <Sidebar
         open={open}
@@ -45,34 +48,50 @@ const StudentGameRoomPage = () => {
         sx={{
           flexGrow: 1,
           p: 3,
-          marginLeft: open ? "180px" : "60px",
           color: "white",
         }}
       >
         <DrawerHeader />
 
-        {/* Updated Grid for Upper Left Alignment */}
-        <Grid
-          container
-          spacing={2}
-          direction="row"
-          justifyContent="flex-start" // Align cards to the left
-          alignItems="flex-start"   // Align cards to the top
-        >
-          {gameCards.map((card, index) => (
-            <Grid item key={index}>
-              <div
-                className={`game-card ${selected === index ? "selected" : ""}`}
-                onClick={() => setSelected(index)}
-                style={{
-                  backgroundImage: `url(${card.image})`,
-                }}
-              >
-                <span className="card-text">{card.text}</span>
-              </div>
-            </Grid>
-          ))}
-        </Grid>
+        {/* Show Back button and selected game if any */}
+        {selectedGame ? (
+          <>
+            <Button
+              variant="outlined"
+              onClick={() => setSelectedGame(null)}
+              sx={{ mb: 2, color: "white", borderColor: "white" }}
+            >
+              ⬅ Back to Game List
+            </Button>
+
+            {selectedGame === "Elemental Match" && <ElementMatchGame />}
+            {/* Add more games here */}
+            {/* selectedGame === "Build the Atom" && <BuildAtomGame /> */}
+          </>
+        ) : (
+          // Game Card List
+          <Grid
+            container
+            spacing={2}
+            direction="row"
+            justifyContent="flex-start"
+            alignItems="flex-start"
+          >
+            {gameCards.map((card, index) => (
+              <Grid item key={index}>
+                <div
+                  className={`game-card ${selectedGame === card.text ? "selected" : ""}`}
+                  onClick={() => setSelectedGame(card.text)}
+                  style={{
+                    backgroundImage: `url(${card.image})`,
+                  }}
+                >
+                  <span className="card-text">{card.text}</span>
+                </div>
+              </Grid>
+            ))}
+          </Grid>
+        )}
       </Box>
     </Box>
   );
