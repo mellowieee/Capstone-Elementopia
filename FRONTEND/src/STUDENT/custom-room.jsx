@@ -1,18 +1,14 @@
-// "use client"
-
-import { useState } from "react"
-// import { useRouter } from "next/navigation"
-import { Users, BookOpen, Plus, Search, Beaker, Edit, Trash, Globe, Lock, X } from "lucide-react"
-// import { CreateLaboratoryModal } from "@/components/create-laboratory-modal"
-import "./custom-room.css"
+import { useState } from "react";
+import { Users, BookOpen, Plus, Search, Beaker, Edit, Trash, Globe, Lock, X } from "lucide-react";
+import CreateLaboratory from "./create-lab";
+import "./custom-room.css";
 import Navbar from '../components/Navbar';
 import Sidebar from '../components/Sidebar';
 
 export default function CustomRoomView() {
-
-  const [searchQuery, setSearchQuery] = useState("")
-  const [createLabModalOpen, setCreateLabModalOpen] = useState(false)
-  const [myLabsModalOpen, setMyLabsModalOpen] = useState(false)
+  const [searchQuery, setSearchQuery] = useState("");
+  const [createLabModalOpen, setCreateLabModalOpen] = useState(false); // This controls the modal visibility
+  const [myLabsModalOpen, setMyLabsModalOpen] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   // Mock data for public laboratories
@@ -49,7 +45,7 @@ export default function CustomRoomView() {
       experiments: 10,
       isPublic: true,
     },
-  ]
+  ];
 
   // Mock data for user's laboratories
   const myLaboratories = [
@@ -67,37 +63,32 @@ export default function CustomRoomView() {
       experiments: 3,
       isPublic: true,
     },
-  ]
+  ];
 
   const filteredPublicLabs = searchQuery
     ? publicLaboratories.filter(
         (lab) =>
           lab.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          lab.creator.toLowerCase().includes(searchQuery.toLowerCase()),
+          lab.creator.toLowerCase().includes(searchQuery.toLowerCase())
       )
-    : publicLaboratories
+    : publicLaboratories;
 
   const handleCreateLab = (data) => {
-    console.log("Laboratory created:", data)
-    //send this data to your backend
+    console.log("Laboratory created:", data);
+    // Send this data to your backend
     // Then redirect to the laboratory details page
-    router.push(`/dashboard/laboratory/${Date.now()}`)
-  }
+    // router.push(`/dashboard/laboratory/${Date.now()}`); // Uncomment if using routing
+  };
 
   const handleJoinLab = (labId) => {
-    //join the laboratory
-    router.push(`/dashboard/laboratory/${labId}`)
-  }
- 
-  return (
+    // Join the laboratory
+    // router.push(`/dashboard/laboratory/${labId}`); // Uncomment if using routing
+  };
 
+  return (
     <div className="custom-room-container">
-            <Sidebar 
-              open={drawerOpen} 
-              handleDrawerOpen={() => setDrawerOpen(true)} 
-              handleDrawerClose={() => setDrawerOpen(false)} 
-            />
-              <Navbar />
+      <Sidebar open={drawerOpen} handleDrawerOpen={() => setDrawerOpen(true)} handleDrawerClose={() => setDrawerOpen(false)} />
+      <Navbar />
       <div className="custom-room-header">
         <div className="custom-room-title-container">
           <h1 className="custom-room-title">Custom Laboratories</h1>
@@ -106,7 +97,6 @@ export default function CustomRoomView() {
         <div className="custom-room-actions">
           <div className="search-container">
             <Search className="search-icon" />
-
             <input
               type="text"
               placeholder="Search laboratories..."
@@ -115,7 +105,7 @@ export default function CustomRoomView() {
               className="search-input"
             />
           </div>
-          <button onClick={() => setCreateLabModalOpen(true)} className="create-lab-button">
+          <button onClick={() => setCreateLabModalOpen(prevState => !prevState)} className="create-lab-button">
             <Plus className="button-icon" /> Create Laboratory
           </button>
           <button onClick={() => setMyLabsModalOpen(true)} className="my-labs-button">
@@ -125,11 +115,13 @@ export default function CustomRoomView() {
       </div>
 
       {/* Create Laboratory Modal */}
-      {/* <CreateLaboratoryModal
-        isOpen={createLabModalOpen}
-        onClose={() => setCreateLabModalOpen(false)}
-        onSubmit={handleCreateLab}
-      /> */}
+      {createLabModalOpen && (
+        <CreateLaboratory
+          isOpen={createLabModalOpen}
+          onClose={() => setCreateLabModalOpen(false)}
+          onSubmit={handleCreateLab}
+        />
+      )}
 
       {/* Summary Cards */}
       <div className="summary-cards">
@@ -160,12 +152,15 @@ export default function CustomRoomView() {
           <div className="card-content">
             <div>
               <p className="card-label">Total Experiments</p>
-              <p className="card-value">{publicLaboratories.reduce((sum, lab) => sum + lab.experiments, 0)}</p>
+              <p className="card-value">
+                {publicLaboratories.reduce((sum, lab) => sum + lab.experiments, 0)}
+              </p>
             </div>
             <BookOpen className="card-icon yellow-icon" />
           </div>
         </div>
       </div>
+
       {/* Public Laboratories */}
       <div className="labs-container">
         <div className="labs-header">
@@ -210,7 +205,6 @@ export default function CustomRoomView() {
                 </div>
               </div>
             ))}
-
             {filteredPublicLabs.length === 0 && (
               <div className="empty-state">
                 <Beaker className="empty-icon" />
@@ -269,8 +263,8 @@ export default function CustomRoomView() {
                         <div className="my-lab-actions">
                           <button
                             onClick={() => {
-                              setMyLabsModalOpen(false)
-                              router.push(`/dashboard/laboratory/${lab.id}`)
+                              setMyLabsModalOpen(false);
+                              router.push(`/dashboard/laboratory/${lab.id}`);
                             }}
                             className="manage-button"
                           >
@@ -295,8 +289,8 @@ export default function CustomRoomView() {
             <div className="modal-footer">
               <button
                 onClick={() => {
-                  setMyLabsModalOpen(false)
-                  setCreateLabModalOpen(true)
+                  setMyLabsModalOpen(false);
+                  setCreateLabModalOpen(true);
                 }}
                 className="create-lab-button"
               >
@@ -307,6 +301,5 @@ export default function CustomRoomView() {
         </div>
       )}
     </div>
-  )
+  );
 }
-

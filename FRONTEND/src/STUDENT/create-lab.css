@@ -12,7 +12,9 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     border: 1px solid #3b3b3b;
     font-weight: bold;
-    
+    position: absolute;
+    margin-left: 35vw;
+    margin-top: 10vh;
   }
   
   .laboratory-container h2 {
@@ -25,14 +27,14 @@
   }
   
   .laboratory-container p {
-    color: #586375;
+    /* color: #586375; */
     font-size: 12px;
     
   }
   
   .input-group {
     margin-bottom: 1rem;
-    
+    color: #586375;
   }
   
   .input-group label {
@@ -168,3 +170,9 @@
     margin-top: 20px;
 
   }
+  .error-message {
+    color: red;
+    /* background-color: white; */
+    /* color: blue; */
+  }
+  
