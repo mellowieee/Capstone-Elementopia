@@ -19,9 +19,11 @@ const UserProfile = () => {
         setLoading(false);
       }
     };
-
+    
     fetchUser();
   }, []);
+
+  console.log(user);
 
   if (loading) return <CircularProgress color="inherit" />;
 

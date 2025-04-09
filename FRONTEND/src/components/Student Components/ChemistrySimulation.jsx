@@ -2,35 +2,36 @@ import React, { useState, useEffect } from "react";
 import { Stage, Layer, Circle, Text, Line } from "react-konva";
 import { Box, Typography, Button, ToggleButton } from "@mui/material";
 import ElementTable from "./ElementTable";
-import { askAI } from "../../utils/ai";
+import compoundElements from "../Student Components/compound-elements.json";
 
 const initialAtoms = [];
-const moleculeCombinations = {
-  "H2O": ["H", "H", "O"],
-  "NH3": ["N", "H", "H", "H"],
-  "CH4": ["C", "H", "H", "H", "H"],
-};
-
 
 const ChemistrySimulation = () => {
   const [atoms, setAtoms] = useState(initialAtoms);
   const [selectedElement, setSelectedElement] = useState("H");
   const [moleculeOutput, setMoleculeOutput] = useState("");
   const [eraseMode, setEraseMode] = useState(false);
-  const apiKey = import.meta.env.VITE_OPENAI_API_KEY;
-
 
   useEffect(() => {
     checkMolecule();
   }, [atoms]);
-  
-  const checkMolecule = async () => {
-    const elements = atoms.map((atom) => atom.element);
-    const result = await askAI(elements, apiKey); 
-    setMoleculeOutput(result);
+
+  const checkMolecule = () => {
+    const currentElements = atoms.map(atom => atom.element).sort();
+    
+    const foundCompound = compoundElements.find(compound => {
+      const compoundElementsSorted = [...compound.elements].sort();
+      return JSON.stringify(compoundElementsSorted) === JSON.stringify(currentElements);
+    });
+
+    if (foundCompound) {
+      setMoleculeOutput(
+        `Molecule Detected: ${foundCompound.name} (${foundCompound.symbol}) - ${foundCompound.description}`
+      );
+    } else {
+      setMoleculeOutput("No known molecule formed.");
+    }
   };
-  
-  
 
   const handleStageClick = (e) => {
     if (!eraseMode) {
@@ -137,46 +138,43 @@ const ChemistrySimulation = () => {
         </Stage>
         <ElementTable selectedElement={selectedElement} setSelectedElement={setSelectedElement} />
         <Box sx={{ display: "flex", gap: 2, position: "relative", bottom: "600px", left: "20px", width: "180px" }}>
-        <ToggleButton
-          value="eraseMode"
-          selected={eraseMode}
-          onChange={() => setEraseMode(!eraseMode)}
-          sx={{
-            backgroundColor: eraseMode ? "red" : "#444",
-            color: "white !important",
-            '&.Mui-selected': {
-              backgroundColor: "red",
+          <ToggleButton
+            value="eraseMode"
+            selected={eraseMode}
+            onChange={() => setEraseMode(!eraseMode)}
+            sx={{
+              backgroundColor: eraseMode ? "red" : "#444",
               color: "white !important",
-            },
-            '&:hover': {
-              backgroundColor: eraseMode ? "#ff3333" : "#666"
-            },
-            transition: "background-color 0.3s",
-          }}
-        >
-          {eraseMode ? "Erase" : "Erase"}
-        </ToggleButton>
-        <Button
-          variant="contained"
-          color="error"
-          onClick={handleClear}
-          sx={{
-            backgroundColor: "#ff3333",
-            "&:hover": {
-              backgroundColor: "#cc2929",
-            },
-          }}
-        >
-          Clear
-        </Button>
-      </Box>
+              '&.Mui-selected': {
+                backgroundColor: "red",
+                color: "white !important",
+              },
+              '&:hover': {
+                backgroundColor: eraseMode ? "#ff3333" : "#666"
+              },
+              transition: "background-color 0.3s",
+            }}
+          >
+            Erase
+          </ToggleButton>
+          <Button
+            variant="contained"
+            color="error"
+            onClick={handleClear}
+            sx={{
+              backgroundColor: "#ff3333",
+              "&:hover": {
+                backgroundColor: "#cc2929",
+              },
+            }}
+          >
+            Clear
+          </Button>
+        </Box>
       </Box>
       <Typography variant="h6" sx={{ color: moleculeOutput.startsWith("Molecule") ? "#ffcc00" : "red", marginTop: 2 }}>
-  {moleculeOutput}
-</Typography>
-
-
-      
+        {moleculeOutput}
+      </Typography>
     </Box>
   );
 };
