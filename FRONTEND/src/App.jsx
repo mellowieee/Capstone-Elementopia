@@ -10,6 +10,7 @@ import StudentDiscoveryPage from "./STUDENT/StudentDiscoveryPage";
 import StudentGameRoomPage from "./STUDENT/StudentGameRoomPage";
 import StudentSandboxPage from "./STUDENT/StudentSandboxPage";
 import PageLayout from "./TEACHER/PageLayout";
+import TeacherAnalyticsPage from "./TEACHER/TeacherAnalyticsPage";
 
 export default function App() {
   return (
@@ -32,6 +33,7 @@ export default function App() {
 
         {/* Teacher Route */}
         <Route path="/teacher-home-page" element={<PageLayout />} />
+        <Route path="/teacher-home-page/analytics" element={<TeacherAnalyticsPage />} />
       </Routes>
     </Router>
   );
