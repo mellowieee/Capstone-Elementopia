@@ -84,12 +84,21 @@ public class UserController {
 
     // Login User (Session-Based)
     @PostMapping("/login")
-    public ResponseEntity<?> loginUser(@RequestBody UserEntity loginRequest) {
+    public ResponseEntity<?> loginUser(@RequestBody UserEntity loginRequest, HttpServletRequest request) {
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
-                            loginRequest.getUsername(), loginRequest.getPassword()));
+                            loginRequest.getUsername(), loginRequest.getPassword()
+                    )
+            );
+
+            // Set authentication in SecurityContext
             SecurityContextHolder.getContext().setAuthentication(authentication);
+
+            // Store SecurityContext in session
+            HttpSession session = request.getSession(true); // Create session if none exists
+            session.setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());
+
             return ResponseEntity.ok("Login successful!");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password!");
@@ -100,7 +109,7 @@ public class UserController {
     // Logout User
     @PostMapping("/logout")
     public ResponseEntity<String> logoutUser(HttpServletRequest request) {
-        HttpSession session = request.getSession(false); // Get session if exists, don't create a new one
+        HttpSession session = request.getSession(false); // Get session if it exists
         if (session != null) {
             session.invalidate();
         }
@@ -109,14 +118,18 @@ public class UserController {
         return ResponseEntity.ok("Logged out successfully!");
     }
 
+
     // Get Current Logged-in User
     @GetMapping("/current-user")
-    public ResponseEntity<?> getCurrentUser(HttpServletRequest request, Principal principal) {
-        HttpSession session = request.getSession(false); // Do not create a new session
-        if (session == null || principal == null) {
+    public ResponseEntity<?> getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null
+                || !authentication.isAuthenticated()
+                || authentication instanceof AnonymousAuthenticationToken) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No active session found!");
         }
-        UserEntity user = uServ.findByUsername(principal.getName());
+
+        UserEntity user = uServ.findByUsername(authentication.getName());
         return ResponseEntity.ok(user);
     }
 

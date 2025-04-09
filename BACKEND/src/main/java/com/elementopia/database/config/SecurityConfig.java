@@ -51,26 +51,25 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(AbstractHttpConfigurer::disable)  // Disable CSRF for APIs (adjust for production)
+                .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> auth
-                        // Allow public access to registration and login endpoints
-                        .requestMatchers("/api/user/register", "/api/user/login").permitAll()
-                        // All other endpoints require authentication
+                        .requestMatchers(
+                                "/api/user/register",
+                                "/api/user/login",
+                                "/api/user/current-user",
+                                "/api/elements/",
+                                "/api/achievementTab/",
+                                "/api/discoveries/",
+                                "/api/achievements/"
+                        ).permitAll()
                         .anyRequest().authenticated()
                 )
-                // Session management: create session if required
                 .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Ensure no session is created automatically
+                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                 )
-
-                // Enable default form-based login to manage sessions
-                .formLogin(form -> form
-                        .loginProcessingUrl("/api/user/login")
-                        .defaultSuccessUrl("/api/user/current-user", true)
-                        .permitAll()
-                )
-                // Configure logout endpoint
+                .formLogin(AbstractHttpConfigurer::disable)
+                .httpBasic(AbstractHttpConfigurer::disable)
                 .logout(logout -> logout
                         .logoutUrl("/api/user/logout")
                         .invalidateHttpSession(true)
@@ -86,10 +85,9 @@ public class SecurityConfig {
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
-        // Configure CORS to allow your frontend to communicate with the backend
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowCredentials(true);
-        configuration.setAllowedOrigins(List.of("http://localhost:5173")); // Update if your frontend URL changes
+        configuration.setAllowedOrigins(List.of("http://localhost:5173"));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
 
