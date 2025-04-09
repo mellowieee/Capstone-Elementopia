@@ -29,8 +29,13 @@ export default function Login({ onLoginSuccess }) {
         sessionStorage.setItem("user", JSON.stringify(response));
 
         setTimeout(() => {
+<<<<<<< HEAD
           if (onLoginSuccess) onLoginSuccess();
           navigate("/student-home-page"); // Redirect to the actual dashboard page
+=======
+          onLoginSuccess && onLoginSuccess();
+          navigate("/student-home-page");
+>>>>>>> 6968222be161dc5f175e8737831e03ef50364a71
         }, 1500);
       } else {
         setMessage(response.message || "Invalid username or password.");
