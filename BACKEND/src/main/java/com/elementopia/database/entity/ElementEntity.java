@@ -1,5 +1,6 @@
 package com.elementopia.database.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
@@ -21,11 +22,6 @@ public class ElementEntity {
     private String description;
 
     @Column(nullable = false)
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate dateDiscovered;
-
-    // Relationship with UserEntity
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    @JsonBackReference
-    private UserEntity user;
 }

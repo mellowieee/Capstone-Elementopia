@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface DiscoveryRepository extends JpaRepository<DiscoveryEntity, Long> {
-    List<DiscoveryEntity> findByUser(UserEntity user);
+    //List<DiscoveryEntity> findByUser(UserEntity user);
 }

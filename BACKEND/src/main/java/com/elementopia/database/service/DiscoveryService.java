@@ -18,13 +18,12 @@ public class DiscoveryService {
     public DiscoveryEntity logDiscovery(DiscoveryEntity discovery) {
         UserEntity currentUser = (UserEntity) SecurityContextHolder.getContext()
                 .getAuthentication().getPrincipal();
-        discovery.setUser(currentUser);
         return discoveryRepository.save(discovery);
     }
 
-    public List<DiscoveryEntity> getDiscoveriesForCurrentUser() {
-        UserEntity currentUser = (UserEntity) SecurityContextHolder.getContext()
-                .getAuthentication().getPrincipal();
-        return discoveryRepository.findByUser(currentUser);
-    }
+//    public List<DiscoveryEntity> getDiscoveriesForCurrentUser() {
+//        UserEntity currentUser = (UserEntity) SecurityContextHolder.getContext()
+//                .getAuthentication().getPrincipal();
+//        return discoveryRepository.findByUser(currentUser);
+//    }
 }

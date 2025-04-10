@@ -19,8 +19,8 @@ public class ElementController {
         return ResponseEntity.ok(elementService.createElement(element));
     }
 
-    @GetMapping("/my-elements")
-    public ResponseEntity<List<ElementEntity>> getCurrentUserElements() {
-        return ResponseEntity.ok(elementService.getElementsForCurrentUser());
-    }
+//    @GetMapping("/my-elements")
+//    public ResponseEntity<List<ElementEntity>> getCurrentUserElements() {
+//        return ResponseEntity.ok(elementService.getElementsForCurrentUser());
+//    }
 }

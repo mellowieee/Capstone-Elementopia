@@ -31,8 +31,6 @@ public class AchievementTabService {
         id.setAchievementId(achievementId);
 
         achievementTab.setId(id);
-        achievementTab.setUser(user);
-        achievementTab.setAchievement(achievement);
         achievementTab.setDateEarned(LocalDate.now());
 
         return achievementTabRepository.save(achievementTab);

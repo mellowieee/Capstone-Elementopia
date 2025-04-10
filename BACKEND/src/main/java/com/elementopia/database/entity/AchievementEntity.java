@@ -1,5 +1,6 @@
 package com.elementopia.database.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
@@ -17,9 +18,4 @@ public class AchievementEntity {
     private String name;
 
     private String description;
-
-    // Relationship with AchievementTabEntity
-    @OneToMany(mappedBy = "achievement")
-    @JsonBackReference
-    private List<AchievementTabEntity> achievementTabs;
 }

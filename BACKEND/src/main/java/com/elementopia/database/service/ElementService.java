@@ -18,13 +18,12 @@ public class ElementService {
     public ElementEntity createElement(ElementEntity element) {
         UserEntity currentUser = (UserEntity) SecurityContextHolder.getContext()
                 .getAuthentication().getPrincipal();
-        element.setUser(currentUser);
         return elementRepository.save(element);
     }
 
-    public List<ElementEntity> getElementsForCurrentUser() {
-        UserEntity currentUser = (UserEntity) SecurityContextHolder.getContext()
-                .getAuthentication().getPrincipal();
-        return elementRepository.findByUser(currentUser);
-    }
+//    public List<ElementEntity> getElementsForCurrentUser() {
+//        UserEntity currentUser = (UserEntity) SecurityContextHolder.getContext()
+//                .getAuthentication().getPrincipal();
+//        return elementRepository.findByUser(currentUser);
+//    }
 }

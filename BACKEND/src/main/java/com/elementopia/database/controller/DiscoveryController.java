@@ -19,8 +19,8 @@ public class DiscoveryController {
         return ResponseEntity.ok(discoveryService.logDiscovery(discovery));
     }
 
-    @GetMapping("/my-discoveries")
-    public ResponseEntity<List<DiscoveryEntity>> getCurrentUserDiscoveries() {
-        return ResponseEntity.ok(discoveryService.getDiscoveriesForCurrentUser());
-    }
+//    @GetMapping("/my-discoveries")
+//    public ResponseEntity<List<DiscoveryEntity>> getCurrentUserDiscoveries() {
+//        return ResponseEntity.ok(discoveryService.getDiscoveriesForCurrentUser());
+//    }
 }
