@@ -7,6 +7,7 @@ import DailyChallengeCard from "../components/Student Components/DailyChallengeC
 import LessonCards from "../components/Student Components/LessonCards";
 import AchievementsCard from "../components/Student Components/AchievementsCard";
 import DiscoveriesCard from "../components/Student Components/DiscoveriesCard";
+import UserCard from "../components/Student Components/UserCard";
 
 const StudentHomePage = () => {
   const [open, setOpen] = useState(false);
@@ -25,6 +26,7 @@ const StudentHomePage = () => {
               <LessonCards />
             </Grid>
             <Grid item xs={12} md={4}>
+              <UserCard/>
               <DiscoveriesCard />
               <AchievementsCard />
             </Grid>
