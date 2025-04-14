@@ -9,6 +9,10 @@ const elements = [
   // Add more if needed
 ];
 
+// useEffect to fetch daily game
+
+
+
 const shuffleCards = () => {
   const cards = [];
   elements.forEach((el) => {
@@ -22,6 +26,7 @@ const ElementMatchGame = () => {
   const [cards, setCards] = useState(shuffleCards());
   const [flipped, setFlipped] = useState([]);
   const [matched, setMatched] = useState([]);
+  
 
   useEffect(() => {
     if (flipped.length === 2) {

@@ -18,16 +18,16 @@
     "@mui/styled-engine-sc": "^6.4.6",
     "axios": "^1.8.4",
     "frontend": "file:",
-<<<<<<< HEAD
-=======
     "konva": "^9.3.20",
->>>>>>> 6968222be161dc5f175e8737831e03ef50364a71
     "lucide-react": "^0.479.0",
     "react": "^19.0.0",
+    "react-confetti": "^6.4.0",
     "react-dom": "^19.0.0",
     "react-konva": "^19.0.3",
     "react-router-dom": "^7.3.0",
     "react-slick": "^0.30.3",
+    "react-tsparticles": "^2.12.2",
+    "recharts": "^2.15.2",
     "slick-carousel": "^1.8.1",
     "styled-components": "^6.1.16"
   },
