@@ -12,6 +12,8 @@ import StudentSandboxPage from "./STUDENT/StudentSandboxPage";
 import StudentCardMinigame from "./STUDENT/StudentCardMinigame";
 import StudentElementMatcher from "./STUDENT/StudentElementMatcher";
 import StudentStateChanges from "./STUDENT/StudentStateChanges";
+import PageLayout from "./TEACHER/PageLayout";
+import TeacherAnalyticsPage from "./TEACHER/TeacherAnalyticsPage";
 
 export default function App() {
   return (
@@ -34,6 +36,10 @@ export default function App() {
         <Route path="/student-home-page/cardgame" element={<StudentCardMinigame />} />
         <Route path="/student-home-page/elementmatcher" element={<StudentElementMatcher />} />
         <Route path="/student-home-page/statechanges" element={<StudentStateChanges />} />
+
+        {/* Teacher Route */}
+        <Route path="/teacher-home-page" element={<PageLayout />} />
+        <Route path="/teacher-home-page/analytics" element={<TeacherAnalyticsPage />} />
       </Routes>
     </Router>
   );

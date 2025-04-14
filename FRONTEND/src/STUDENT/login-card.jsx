@@ -32,7 +32,7 @@ export default function Login({ onLoginSuccess }) {
 
         setTimeout(() => {
           onLoginSuccess && onLoginSuccess();
-          navigate("/");
+          navigate("/student-home-page");
         }, 1500);
       } else {
         setMessage("Invalid username or password.");

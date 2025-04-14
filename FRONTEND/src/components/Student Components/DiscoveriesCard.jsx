@@ -9,6 +9,7 @@ const DiscoveriesCard = () => {
     <Card
       sx={{
         bgcolor: "#292929",
+        marginTop: "20px",
         color: "white",
         p: 2,
         width: "100%",

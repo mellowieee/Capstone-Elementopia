@@ -12,11 +12,11 @@ const AchievementsCard = () => {
         color: "white",
         p: 2,
         width: "100%",
-        border: "2px solid #ff4081",
-        boxShadow: "0px 0px 15px rgba(255, 64, 129, 0.6)",
+        border: "2px solid #8bc34a",
+        boxShadow: "0px 0px 15px rgba(139, 195, 74, 0.6)",
         transition: "transform 0.2s, box-shadow 0.3s",
         "&:hover": {
-          boxShadow: "0px 0px 20px rgba(255, 64, 129, 1)",
+          boxShadow: "0px 0px 20px rgba(139, 195, 74, 1)",
         },
       }}
     >
