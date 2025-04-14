@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import "./MissionSection.css"; 
+import "../assets/css/MissionSection.css";
 
 const MissionSection = () => {
   const sectionRef = useRef(null);
@@ -14,12 +14,12 @@ const MissionSection = () => {
           if (entry.isIntersecting) {
             entry.target.classList.add("show");
           } else {
-            entry.target.classList.remove("show"); 
+            entry.target.classList.remove("show");
           }
         });
       },
       {
-        root: null, 
+        root: null,
         threshold: 0.3,
       }
     );
@@ -35,9 +35,10 @@ const MissionSection = () => {
     <div className="content-introduction" ref={sectionRef}>
       <h2 className="content-intro-title">Our Mission</h2>
       <p className="content-intro-desc">
-        Our mission is to make learning chemistry fun and engaging for students of all ages. 
-        We believe that by combining education with entertainment, we can create a unique learning 
-        experience that will help students master the fundamentals of chemistry.
+        Our mission is to make learning chemistry fun and engaging for students
+        of all ages. We believe that by combining education with entertainment,
+        we can create a unique learning experience that will help students
+        master the fundamentals of chemistry.
       </p>
     </div>
   );

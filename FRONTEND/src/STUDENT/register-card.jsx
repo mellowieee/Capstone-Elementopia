@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import FeatureCard from "../components/featurecard";
 import "../components/buttons.css";
-import "./register-card.css";
+import "../assets/css/register-card.css";
 import UserService from "../services/UserService";
 import { useNavigate } from "react-router-dom";
 
