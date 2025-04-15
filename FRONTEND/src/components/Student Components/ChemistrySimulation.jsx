@@ -17,16 +17,21 @@ const ChemistrySimulation = () => {
   }, [atoms]);
 
   const checkMolecule = () => {
-    const currentElements = atoms.map(atom => atom.element).sort();
-    
+    const currentElements = atoms.map(atom => atom.element);
+
     const foundCompound = compoundElements.find(compound => {
-      const compoundElementsSorted = [...compound.elements].sort();
-      return JSON.stringify(compoundElementsSorted) === JSON.stringify(currentElements);
+      const compoundElementsSorted = [...compound.Elements].sort();
+      const currentElementsSorted = [...currentElements].sort();
+      return JSON.stringify(compoundElementsSorted) === JSON.stringify(currentElementsSorted);
     });
 
     if (foundCompound) {
       setMoleculeOutput(
-        `Molecule Detected: ${foundCompound.name} (${foundCompound.symbol}) - ${foundCompound.description}`
+        `NAME: ${foundCompound.NAME}\n` +
+        `Symbol: ${foundCompound.Symbol}\n` +
+        `Description: ${foundCompound.Description}\n` +
+        `Elements: ${foundCompound.Elements.join(", ")}\n` +
+        `Uses: ${foundCompound.Uses.join(", ")}`
       );
     } else {
       setMoleculeOutput("No known molecule formed.");
@@ -40,14 +45,30 @@ const ChemistrySimulation = () => {
       const pointer = stage.getPointerPosition();
       if (!pointer) return;
       const { x, y } = pointer;
-      setAtoms([...atoms, { id: atoms.length + 1, x, y, element: selectedElement }]);
+
+      const selectedElementFullName =
+        compoundElements.find((compound) => compound.Symbol === selectedElement)
+          ?.Elements[0] || selectedElement;
+
+      setAtoms((prevAtoms) => [
+        ...prevAtoms,
+        {
+          id: prevAtoms.length + 1,
+          x,
+          y,
+          element: selectedElement,
+          fullElementName: selectedElementFullName,
+        },
+      ]);
     }
   };
 
   const handleDragMove = (e) => {
     const id = parseInt(e.target.id());
     const { x, y } = e.target.position();
-    setAtoms((prevAtoms) => prevAtoms.map((atom) => atom.id === id ? { ...atom, x, y } : atom));
+    setAtoms((prevAtoms) =>
+      prevAtoms.map((atom) => (atom.id === id ? { ...atom, x, y } : atom))
+    );
   };
 
   const handleAtomClick = (id) => {
@@ -79,8 +100,8 @@ const ChemistrySimulation = () => {
     <Box
       sx={{
         display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
+        justifyContent: "space-between",
+        alignItems: "flex-start",
         backgroundColor: "#0a0a0f",
         height: "100vh",
         width: "100%",
@@ -88,11 +109,33 @@ const ChemistrySimulation = () => {
         marginTop: "30px",
       }}
     >
-      <Typography variant="h4" sx={{ color: "#ffcc00", fontWeight: "bold", textShadow: "2px 2px 8px #ffcc00" }}>
-        Chemistry Simulation
-      </Typography>
-      <Box sx={{ backgroundColor: "#12121a", borderRadius: 3, boxShadow: 4, padding: 3, mt: 2, height: "300px" }}>
-        <Stage width={1320} height={300} onClick={handleStageClick} style={{ border: "2px solid #ffcc00", borderRadius: "10px" }}>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          flex: 1, 
+          marginRight: "20px", 
+        }}
+      >
+        <Typography
+          variant="h4"
+          sx={{
+            color: "#ffcc00",
+            fontWeight: "bold",
+            textShadow: "2px 2px 8px #ffcc00",
+            marginBottom: "30px",
+            textAlign: 'center',
+          }}
+        >
+          Chemistry Simulation
+        </Typography>
+
+        <Stage
+          width={900} 
+          height={300}  
+          onClick={handleStageClick}
+          style={{ border: "2px solid #ffcc00", borderRadius: "10px" }}
+        >
           <Layer>
             {getBonds().map((bond, index) => (
               <Line
@@ -110,11 +153,17 @@ const ChemistrySimulation = () => {
                   y={atom.y}
                   radius={24}
                   fill={
-                    atom.element === "O" ? "red" :
-                      atom.element === "C" ? "#4d4d4d" :
-                        atom.element === "N" ? "#6666ff" :
-                          atom.element === "Cl" ? "#66ff66" : 
-                            atom.element === "H" ? "#444444" : "#ffffff" 
+                    atom.element === "O"
+                      ? "red"
+                      : atom.element === "C"
+                      ? "#4d4d4d"
+                      : atom.element === "N"
+                      ? "#6666ff"
+                      : atom.element === "Cl"
+                      ? "#66ff66"
+                      : atom.element === "H"
+                      ? "#444444"
+                      : "#ffffff"
                   }
                   draggable
                   onDragMove={handleDragMove}
@@ -127,7 +176,7 @@ const ChemistrySimulation = () => {
                 <Text
                   x={atom.x - 6}
                   y={atom.y - 6}
-                  text={atom.element}
+                  text={atom.fullElementName}
                   fontSize={18}
                   fill="black"
                   fontStyle="bold"
@@ -136,8 +185,22 @@ const ChemistrySimulation = () => {
             ))}
           </Layer>
         </Stage>
-        <ElementTable selectedElement={selectedElement} setSelectedElement={setSelectedElement} />
-        <Box sx={{ display: "flex", gap: 2, position: "relative", bottom: "600px", left: "20px", width: "180px" }}>
+
+        <ElementTable
+          selectedElement={selectedElement}
+          setSelectedElement={setSelectedElement}
+        />
+
+        <Box
+          sx={{
+            display: "flex",
+            gap: 2,
+            position: "relative",
+            bottom: "600px",
+            left: "20px",
+            width: "180px",
+          }}
+        >
           <ToggleButton
             value="eraseMode"
             selected={eraseMode}
@@ -145,12 +208,12 @@ const ChemistrySimulation = () => {
             sx={{
               backgroundColor: eraseMode ? "red" : "#444",
               color: "white !important",
-              '&.Mui-selected': {
+              "&.Mui-selected": {
                 backgroundColor: "red",
                 color: "white !important",
               },
-              '&:hover': {
-                backgroundColor: eraseMode ? "#ff3333" : "#666"
+              "&:hover": {
+                backgroundColor: eraseMode ? "#ff3333" : "#666",
               },
               transition: "background-color 0.3s",
             }}
@@ -172,9 +235,33 @@ const ChemistrySimulation = () => {
           </Button>
         </Box>
       </Box>
-      <Typography variant="h6" sx={{ color: moleculeOutput.startsWith("Molecule") ? "#ffcc00" : "red", marginTop: 2 }}>
-        {moleculeOutput}
-      </Typography>
+
+      {/* Output Area */}
+      <Box
+        sx={{
+          width: "300px",
+          backgroundColor: "#1a1a1d",
+          borderRadius: "10px",
+          padding: 2,
+          position: "sticky",
+          top: "150px",
+          boxShadow: "0px 0px 10px rgba(255, 204, 0, 0.6)",
+        }}
+      >
+        <Typography
+          variant="h6"
+          sx={{
+            color: moleculeOutput.startsWith("Molecule") ? "#ffcc00" : "red",
+            whiteSpace: "pre-line",
+            fontFamily: "'Roboto', sans-serif",
+            fontSize: "16px",
+            lineHeight: "1.5",
+            wordBreak: "break-word",
+          }}
+        >
+          {moleculeOutput}
+        </Typography>
+      </Box>
     </Box>
   );
 };
