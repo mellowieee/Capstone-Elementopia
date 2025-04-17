@@ -2,6 +2,7 @@ package com.elementopia.database.controller;
 
 import com.elementopia.database.dto.JwtResponse;
 import com.elementopia.database.dto.LoginRequest;
+import com.elementopia.database.dto.LoginResponse;
 import com.elementopia.database.dto.UserDTO;
 import com.elementopia.database.entity.UserEntity;
 import com.elementopia.database.service.UserService;
@@ -111,15 +112,21 @@ public class UserController {
                             loginRequest.password()
                     )
             );
+
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
             String jwt = jwtUtil.generateToken(userDetails);
-            UserEntity userEntity = uServ.findByUsername(userDetails.getUsername());
-            // Return a JWT along with the sanitized user data
-            return ResponseEntity.ok(new JwtResponse(jwt, uServ.toDTO(userEntity)));
+
+            // Return token and message only (no user DTO)
+            return ResponseEntity.ok(
+                    new LoginResponse("Login successful!", jwt)
+            );
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password!");
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .body("Invalid username or password!");
         }
     }
+
 
     // Get Current User (JWT-based; returns DTO)
     @GetMapping("/current-user")

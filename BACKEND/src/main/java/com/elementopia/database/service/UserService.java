@@ -1,6 +1,9 @@
 package com.elementopia.database.service;
 
 
+import com.elementopia.database.dto.DiscoveryDTO;
+import com.elementopia.database.dto.StudentDTO;
+import com.elementopia.database.dto.TeacherDTO;
 import com.elementopia.database.dto.UserDTO;
 import com.elementopia.database.entity.StudentEntity;
 import com.elementopia.database.entity.TeacherEntity;
@@ -14,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -30,6 +34,7 @@ public class UserService {
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
+
     public UserDTO toDTO(UserEntity user) {
         UserDTO dto = new UserDTO();
         dto.setUserId(user.getUserId());
@@ -38,8 +43,38 @@ public class UserService {
         dto.setFirstName(user.getFirstName());
         dto.setLastName(user.getLastName());
         dto.setRole(user.getRole());
+
+        // Map Student
+        if (user.getStudent() != null) {
+            StudentDTO studentDTO = new StudentDTO();
+            studentDTO.setFirstName(user.getStudent().getFirstName());
+            studentDTO.setLastName(user.getStudent().getLastName());
+            dto.setStudent(studentDTO);
+        }
+
+        // Map Teacher
+        if (user.getTeacher() != null) {
+            TeacherDTO teacherDTO = new TeacherDTO();
+            teacherDTO.setFirstName(user.getTeacher().getFirstName());
+            teacherDTO.setLastName(user.getTeacher().getLastName());
+            dto.setTeacher(teacherDTO);
+        }
+
+        // Map Discoveries
+        if (user.getDiscoveries() != null) {
+            List<DiscoveryDTO> discoveryDTOs = user.getDiscoveries().stream()
+                    .map(d -> {
+                        DiscoveryDTO dtoItem = new DiscoveryDTO();
+                        dtoItem.setName(d.getName());
+                        dtoItem.setDateDiscovered(d.getDateDiscovered());
+                        return dtoItem;
+                    }).collect(Collectors.toList());
+            dto.setDiscoveries(discoveryDTOs);
+        }
+
         return dto;
     }
+
 
     // Get User By Username
     public UserEntity findByUsername(String username) {
