@@ -12,6 +12,7 @@ import StudentSandboxPage from "./STUDENT/StudentSandboxPage";
 import PageLayout from "./TEACHER/PageLayout";
 import TeacherAnalyticsPage from "./TEACHER/TeacherAnalyticsPage";
 import ChallengePage from "./components/Student Components/ChallengePage";
+import TeacherCareerPage from "./TEACHER/TeacherCareerPage";
 
 export default function App() {
   return (
@@ -36,6 +37,7 @@ export default function App() {
         {/* Teacher Route */}
         <Route path="/teacher-home-page" element={<PageLayout />} />
         <Route path="/teacher/analytics" element={<TeacherAnalyticsPage />} />
+        <Route path="/teacher/career-page" element={<TeacherCareerPage />} />
       </Routes>
     </Router>
   );
