@@ -1,10 +1,7 @@
 package com.elementopia.database.service;
 
 
-import com.elementopia.database.dto.DiscoveryDTO;
-import com.elementopia.database.dto.StudentDTO;
-import com.elementopia.database.dto.TeacherDTO;
-import com.elementopia.database.dto.UserDTO;
+import com.elementopia.database.dto.*;
 import com.elementopia.database.entity.StudentEntity;
 import com.elementopia.database.entity.TeacherEntity;
 import com.elementopia.database.entity.UserEntity;
@@ -70,6 +67,18 @@ public class UserService {
                         return dtoItem;
                     }).collect(Collectors.toList());
             dto.setDiscoveries(discoveryDTOs);
+        }
+
+        // Map Achievements
+        if (user.getAchievements() != null) {
+            List<AchievementDTO> achievementDTOs = user.getAchievements().stream()
+                    .map(a -> {
+                        AchievementDTO achievementDTO = new AchievementDTO();
+                        achievementDTO.setTitle(a.getTitle());
+                        achievementDTO.setDateAchieved(a.getDateAchieved());
+                        return achievementDTO;
+                    }).collect(Collectors.toList());
+            dto.setAchievements(achievementDTOs);
         }
 
         return dto;

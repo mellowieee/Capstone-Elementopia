@@ -16,5 +16,6 @@ public class UserDTO {
     private StudentDTO student;
     private TeacherDTO teacher;
     private List<DiscoveryDTO> discoveries;
+    private List<AchievementDTO> achievements;
 
 }
