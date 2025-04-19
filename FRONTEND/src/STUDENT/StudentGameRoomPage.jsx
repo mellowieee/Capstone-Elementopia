@@ -8,14 +8,14 @@ import Sidebar from "../components/Sidebar";
 import ElementMatchGame from "../components/MiniGames/ElementMatchGame"; // Import your mini-game here
 
 // Assets
-import card1 from "../assets/card1.jpg";
-import card2 from "../assets/card2.jpg";
-import card3 from "../assets/card3.jpg";
-import card4 from "../assets/card4.jpg";
-import card5 from "../assets/card5.jpg";
+import card1 from "../assets/img/card1.jpg";
+import card2 from "../assets/img/card2.jpg";
+import card3 from "../assets/img/card3.jpg";
+import card4 from "../assets/img/card4.jpg";
+import card5 from "../assets/img/card5.jpg";
 
 // Styles
-import "./StudentGameRoomPage.css";
+import "../assets/css/StudentGameRoomPage.css";
 
 const DrawerHeader = styled("div")(({ theme }) => ({
   ...theme.mixins.toolbar,

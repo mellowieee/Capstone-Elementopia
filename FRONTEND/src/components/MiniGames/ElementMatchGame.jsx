@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./ElementMatchGame.css";
+import "../../assets/css/ElementMatchGame.css";
 
 const elements = [
   { name: "Hydrogen", symbol: "H" },

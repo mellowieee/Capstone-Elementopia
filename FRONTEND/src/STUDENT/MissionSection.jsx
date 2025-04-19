@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import "./MissionSection.css"; 
+import "../assets/css/MissionSection.css"; 
 
 const MissionSection = () => {
   const sectionRef = useRef(null);
