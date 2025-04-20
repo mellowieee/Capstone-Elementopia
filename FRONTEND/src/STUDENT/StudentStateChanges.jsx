@@ -3,7 +3,7 @@ import { Box, Typography, Slider, Button, Select, MenuItem, FormControl, InputLa
 import { styled } from '@mui/material/styles';
 import Navbar from '../components/NavBar';
 import Sidebar from '../components/Sidebar';
-import './StudentStateChanges.css'; // Import the CSS file
+import './StudentStateChanges.css';
 
 const DrawerHeader = styled('div')(({ theme }) => ({
   ...theme.mixins.toolbar,
@@ -52,24 +52,23 @@ const substances = [
   }
 ];
 
-// Challenge modes
-const challengeModes = [
-  { id: 'explore', name: 'Explore Mode' },
-  { id: 'target', name: 'Target State' },
-  { id: 'cycle', name: 'State Cycle' },
-];
-
-const StudentStateChanges = () => {
+const StateChangesChallenge = () => {
   const [open, setOpen] = useState(false);
   const [selectedSubstance, setSelectedSubstance] = useState(substances[0]);
   const [temperature, setTemperature] = useState(25); // in Celsius
   const [pressure, setPressure] = useState(1); // in atm
   const [currentState, setCurrentState] = useState('liquid');
-  const [mode, setMode] = useState(challengeModes[0]);
+  const [challengeActive, setChallengeActive] = useState(false);
+  const [challengeType, setChallengeType] = useState(null); // 'target' or 'cycle'
   const [particles, setParticles] = useState([]);
   const [feedback, setFeedback] = useState('');
   const [targetState, setTargetState] = useState(null);
   const [score, setScore] = useState(0);
+  const [currentSubstanceIndex, setCurrentSubstanceIndex] = useState(0);
+  const [completedChallengesForSubstance, setCompletedChallengesForSubstance] = useState(0);
+  const [completedSubstances, setCompletedSubstances] = useState([]);
+  const [targetAchieved, setTargetAchieved] = useState(false);
+  const [cycleProgress, setCycleProgress] = useState(0); // 0=none, 1=solid, 2=liquid, 3=gas
   
   // Handle drawer
   const handleDrawerOpen = () => setOpen(true);
@@ -96,19 +95,31 @@ const StudentStateChanges = () => {
     updateState(selectedSubstance, temperature, newValue);
   };
 
-  // Handle mode change
-  const handleModeChange = (event) => {
-    const newMode = challengeModes.find(m => m.id === event.target.value);
-    setMode(newMode);
-    
-    // Reset if changing modes
-    setFeedback('');
-    
-    // Set up the challenge based on mode
-    if (newMode.id === 'target') {
-      setupTargetChallenge();
-    } else if (newMode.id === 'cycle') {
-      setupCycleChallenge();
+  // Handle challenge button click
+  const handleChallengeToggle = () => {
+    if (challengeActive) {
+      // Turn off challenge mode
+      setChallengeActive(false);
+      setChallengeType(null);
+      setTargetState(null);
+      setCompletedSubstances([]);
+      setCurrentSubstanceIndex(0);
+      setCompletedChallengesForSubstance(0);
+      setTargetAchieved(false);
+      setCycleProgress(0);
+      setFeedback('Explore mode activated. Try different temperature and pressure combinations!');
+      setTimeout(() => setFeedback(''), 2000);
+    } else {
+      // Start with first substance if not already set
+      const substanceToUse = substances[currentSubstanceIndex];
+      setSelectedSubstance(substanceToUse);
+      // Set to target challenge as default
+      setChallengeType('target');
+      setTargetAchieved(false);
+      setCycleProgress(0);
+      setCompletedChallengesForSubstance(0);
+      setupTargetChallenge(substanceToUse);
+      setChallengeActive(true);
     }
   };
 
@@ -137,61 +148,159 @@ const StudentStateChanges = () => {
     // Generate particles based on state
     generateParticles(newState, temp);
     
-    // Check if challenge goal is met
-    checkChallengeProgress(newState);
+    // Check if challenge goal is met if a challenge is active
+    if (challengeActive) {
+      checkChallengeProgress(newState, substance);
+    }
   };
 
   // Set up a target state challenge
-  const setupTargetChallenge = () => {
+  const setupTargetChallenge = (substance = selectedSubstance) => {
     const states = ['solid', 'liquid', 'gas'];
-    const randomState = states[Math.floor(Math.random() * states.length)];
+    
+    // Ensure we don't get the same state twice in a row
+    let currentTargetState = targetState;
+    let randomState;
+    do {
+      randomState = states[Math.floor(Math.random() * states.length)];
+    } while (randomState === currentTargetState);
+    
     setTargetState(randomState);
-    setFeedback(`Challenge: Make ${selectedSubstance.name} a ${selectedSubstance.states[randomState].name}!`);
+    setTargetAchieved(false); // Reset target achievement tracker
+    
+    const challengeNumber = completedChallengesForSubstance + 1;
+    setFeedback(`Challenge ${challengeNumber}/3: Make ${substance.name} a ${substance.states[randomState].name}!`);
   };
 
   // Set up cycle challenge
-  const setupCycleChallenge = () => {
+  const setupCycleChallenge = (substance = selectedSubstance) => {
     setTargetState('solid'); // Start with solid
-    setFeedback(`Challenge: Start with ${selectedSubstance.states.solid.name}, then cycle through all states!`);
+    setCycleProgress(0); // Reset cycle progress
+    setFeedback(`Challenge 3/3: Start with ${substance.states.solid.name}, then cycle through all states!`);
+  };
+
+  // Move to next challenge or substance
+  const moveToNextChallenge = () => {
+    const nextChallengeCount = completedChallengesForSubstance + 1;
+    
+    // Check if we've done all 3 challenges for this substance
+    if (nextChallengeCount >= 3) {
+      // Move to next substance
+      moveToNextSubstance();
+    } else {
+      // Set up next challenge for current substance
+      setCompletedChallengesForSubstance(nextChallengeCount);
+      
+      // Need to update completed challenges before choosing next challenge type
+      setTimeout(() => {
+        if (nextChallengeCount === 1) {
+          // Second challenge is another target state
+          setupTargetChallenge();
+        } else if (nextChallengeCount === 2) {
+          // Third challenge is a cycle challenge
+          setChallengeType('cycle');
+          setupCycleChallenge();
+        }
+      }, 500); // Small delay to ensure state updates
+    }
+  };
+
+  // Move to next substance challenge
+  const moveToNextSubstance = () => {
+    // Add current substance to completed list
+    setCompletedSubstances(prev => [...prev, selectedSubstance.id]);
+    
+    // Reset challenge count for next substance
+    setCompletedChallengesForSubstance(0);
+    
+    // Find next uncompleted substance
+    let nextIndex = (currentSubstanceIndex + 1) % substances.length;
+    
+    // Check if we've completed all substances
+    if (completedSubstances.length + 1 >= substances.length) {
+      // All substances completed, return to explore mode
+      setChallengeActive(false);
+      setChallengeType(null);
+      setTargetState(null);
+      setCompletedSubstances([]);
+      setCurrentSubstanceIndex(0);
+      setTargetAchieved(false);
+      setCycleProgress(0);
+      setFeedback('Congratulations! You\'ve completed challenges for all substances! Returning to explore mode.');
+      setTimeout(() => setFeedback(''), 4000);
+      return;
+    }
+    
+    // Find the next substance that hasn't been completed
+    while (completedSubstances.includes(substances[nextIndex].id)) {
+      nextIndex = (nextIndex + 1) % substances.length;
+    }
+    
+    // Update substance index
+    setCurrentSubstanceIndex(nextIndex);
+    const nextSubstance = substances[nextIndex];
+    
+    // Set next substance and reset to room temperature
+    setSelectedSubstance(nextSubstance);
+    setTemperature(25);
+    setPressure(1);
+    setTargetAchieved(false);
+    setCycleProgress(0);
+    setChallengeType('target'); // Reset to target challenge for new substance
+    
+    // Set up new challenge
+    setTimeout(() => {
+      setFeedback(`Next substance: ${nextSubstance.name}!`);
+      setTimeout(() => {
+        setupTargetChallenge(nextSubstance);
+        updateState(nextSubstance, 25, 1);
+      }, 1500);
+    }, 1000);
   };
 
   // Check if challenge goal is met
-  const checkChallengeProgress = (newState) => {
-    if (mode.id === 'explore') {
+  const checkChallengeProgress = (newState, substance = selectedSubstance) => {
+    if (!challengeActive) {
       return; // No challenge to check in explore mode
     }
     
-    if (mode.id === 'target' && newState === targetState) {
-      setFeedback(`✅ Success! You've changed ${selectedSubstance.name} to ${selectedSubstance.states[newState].name}!`);
+    if (challengeType === 'target' && newState === targetState && !targetAchieved) {
+      // Mark target as achieved to prevent multiple score increments
+      setTargetAchieved(true);
+      
+      // Award points and provide feedback
+      setFeedback(`✅ Success! You've changed ${substance.name} to ${substance.states[newState].name}! +10 points`);
       setScore(prevScore => prevScore + 10);
-      setTargetState(null);
+      
+      // Wait and set up next challenge or move to next substance
       setTimeout(() => {
-        setupTargetChallenge();
+        moveToNextChallenge();
       }, 2000);
     }
     
-    if (mode.id === 'cycle' && newState === targetState) {
-      let nextTarget;
-      
-      if (targetState === 'solid') {
-        nextTarget = 'liquid';
-        setFeedback(`✅ ${selectedSubstance.states.solid.name} created! Now make it a ${selectedSubstance.states.liquid.name}!`);
-      } else if (targetState === 'liquid') {
-        nextTarget = 'gas';
-        setFeedback(`✅ ${selectedSubstance.states.liquid.name} created! Now make it a ${selectedSubstance.states.gas.name}!`);
-      } else if (targetState === 'gas') {
-        nextTarget = 'solid';
-        setFeedback(`✅ ${selectedSubstance.states.gas.name} created! Full cycle completed! +50 points!`);
-        setScore(prevScore => prevScore + 50);
-        setTimeout(() => {
-          setFeedback(`Start a new cycle: Create ${selectedSubstance.states.solid.name}!`);
-        }, 2000);
-      }
-      
-      setTargetState(nextTarget);
-      
-      if (nextTarget !== 'solid') {
+    if (challengeType === 'cycle') {
+      // Handle cycle challenge with state tracking to prevent multiple score increments
+      if (newState === 'solid' && cycleProgress === 0) {
+        setCycleProgress(1);
+        setFeedback(`✅ ${substance.states.solid.name} created! Now make it a ${substance.states.liquid.name}!`);
+        setTargetState('liquid');
         setScore(prevScore => prevScore + 10);
+      } 
+      else if (newState === 'liquid' && cycleProgress === 1) {
+        setCycleProgress(2);
+        setFeedback(`✅ ${substance.states.liquid.name} created! Now make it a ${substance.states.gas.name}!`);
+        setTargetState('gas');
+        setScore(prevScore => prevScore + 10);
+      } 
+      else if (newState === 'gas' && cycleProgress === 2) {
+        setCycleProgress(3);
+        setFeedback(`✅ ${substance.states.gas.name} created! Full cycle completed! +50 points!`);
+        setScore(prevScore => prevScore + 50);
+        
+        // Move to next substance after completing cycle
+        setTimeout(() => {
+          moveToNextSubstance();
+        }, 2000);
       }
     }
   };
@@ -216,6 +325,8 @@ const StudentStateChanges = () => {
   // Initialize on load
   useEffect(() => {
     updateState(selectedSubstance, temperature, pressure);
+    setFeedback('Explore mode: Change temperature and pressure to see different states of matter!');
+    setTimeout(() => setFeedback(''), 3000);
   }, []);
 
   // Animation loop for particles
@@ -263,31 +374,45 @@ const StudentStateChanges = () => {
       >
         <DrawerHeader />
 
-        <Box className="game-container">
+        <Box className="game-container" sx={{ height: "600px", overflowY: "auto" }}>
           <Box className="header-section">
             <Typography variant="h4" className="game-title">
               State Changes Challenge
             </Typography>
             <Box className="mode-score-container">
-              <FormControl className="mode-select">
-                <InputLabel id="mode-select-label">Mode</InputLabel>
-                <Select
-                  labelId="mode-select-label"
-                  id="mode-select"
-                  value={mode.id}
-                  label="Mode"
-                  onChange={handleModeChange}
-                >
-                  {challengeModes.map(m => (
-                    <MenuItem key={m.id} value={m.id}>{m.name}</MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
+              <Button 
+                className={challengeActive ? "reset-button" : ""}
+                variant="contained" 
+                color={challengeActive ? "secondary" : "primary"}
+                onClick={handleChallengeToggle}
+              >
+                {challengeActive 
+                  ? "Exit Challenge" 
+                  : "Challenge Mode"
+                }
+              </Button>
               <Typography variant="h6" className="score-display">
                 Score: {score}
               </Typography>
             </Box>
           </Box>
+
+          {/* Challenge progress indicator */}
+          {challengeActive && (
+            <Box className="challenge-progress">
+              <Typography variant="subtitle1">
+                Substance: {selectedSubstance.name} - Challenge {completedChallengesForSubstance + 1}/3
+              </Typography>
+              <Box className="progress-indicators">
+                {[0, 1, 2].map((index) => (
+                  <Box 
+                    key={index}
+                    className={`progress-dot ${index < completedChallengesForSubstance ? 'completed' : index === completedChallengesForSubstance ? 'current' : ''}`}
+                  />
+                ))}
+              </Box>
+            </Box>
+          )}
 
           {/* Feedback message */}
           {feedback && (
@@ -306,6 +431,7 @@ const StudentStateChanges = () => {
                 value={selectedSubstance.id}
                 label="Substance"
                 onChange={handleSubstanceChange}
+                disabled={challengeActive} // Disable during challenges
               >
                 {substances.map(substance => (
                   <MenuItem key={substance.id} value={substance.id}>{substance.name}</MenuItem>
@@ -343,16 +469,24 @@ const StudentStateChanges = () => {
             </Box>
           </Box>
 
-          {/* Simulation Container */}
+          {/* Simulation Container - Set fixed height to ensure consistent size */}
           <Box 
-            className="simulation-container"
+            className={`simulation-container state-${currentState}`}
             style={{ 
               backgroundColor: selectedSubstance.states[currentState].color,
+              height: "250px"  // Fixed height
             }}
           >
             <Typography variant="h5" className="state-label">
               Current State: {selectedSubstance.states[currentState].name}
             </Typography>
+            
+            {/* Target state indicator (only shown during challenges) */}
+            {challengeActive && targetState && (
+              <Typography className="target-state-indicator">
+                Target: {selectedSubstance.states[targetState].name}
+              </Typography>
+            )}
             
             {/* Particles */}
             {particles.map(particle => (
@@ -368,6 +502,19 @@ const StudentStateChanges = () => {
                 }}
               />
             ))}
+            
+            {/* Temperature indicator */}
+            <Box className="temperature-indicator">
+              <div className="temperature-bar">
+                <div 
+                  className="temperature-marker" 
+                  style={{ 
+                    top: `${100 - ((temperature + 250) / 650 * 100)}%` 
+                  }}
+                />
+              </div>
+              <Typography variant="caption">{temperature}°C</Typography>
+            </Box>
           </Box>
 
           {/* Info panel */}
@@ -386,4 +533,4 @@ const StudentStateChanges = () => {
   );
 };
 
-export default StudentStateChanges;
+export default StateChangesChallenge;

@@ -1,7 +1,15 @@
 import React from "react";
 import { Card, Typography, Button } from "@mui/material";
+import { useNavigate } from "react-router-dom"; // For navigation
 
 const DailyChallengeCard = () => {
+  const navigate = useNavigate();
+
+  // Handle the redirect to the challenge page
+  const handleStartChallenge = () => {
+    navigate("/student/daily-challenge");
+  };
+
   return (
     <Card
       sx={{
@@ -31,7 +39,7 @@ const DailyChallengeCard = () => {
         Daily Challenge
       </Typography>
       <Typography sx={{ mt: 1, fontSize: "1.1rem", opacity: 0.8 }}>
-        Here’s your daily Challenge! Complete it and claim your reward!
+        Ready for a challenge? Click below to start today's challenge!
       </Typography>
       <Button
         variant="contained"
@@ -51,6 +59,7 @@ const DailyChallengeCard = () => {
             boxShadow: "0px 0px 15px rgba(255, 152, 0, 1)",
           },
         }}
+        onClick={handleStartChallenge}
       >
         Start Challenge
       </Button>
