@@ -1,25 +1,29 @@
 package com.elementopia.database.entity;
 
-import jakarta.persistence.*;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.*;
 import lombok.Data;
-import java.util.List;
+import java.time.LocalDate;
 
-@Data
 @Entity
 @Table(name = "achievement")
+@Data
 public class AchievementEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long achievementId;
 
-    @Column(nullable = false)
-    private String name;
+    @Column(name = "title", nullable = false)
+    private String title;
 
+    @Column(name = "description")
     private String description;
 
-    // Relationship with AchievementTabEntity
-    @OneToMany(mappedBy = "achievement")
+    @Column(name = "date_achieved", nullable = false)
+    private LocalDate dateAchieved;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
     @JsonBackReference
-    private List<AchievementTabEntity> achievementTabs;
+    private UserEntity user;
 }

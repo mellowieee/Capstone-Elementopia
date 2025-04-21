@@ -1,8 +1,9 @@
 package com.elementopia.database.entity;
 
-import jakarta.persistence.*;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.*;
 import lombok.Data;
+
 import java.time.LocalDate;
 
 @Data
@@ -13,13 +14,12 @@ public class DiscoveryEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long discoveryId;
 
-    @Column(nullable = false)
+    @Column(name = "name")
     private String name;
 
-    @Column(nullable = false)
+    @Column(name = "date_discovered")
     private LocalDate dateDiscovered;
 
-    // Relationship with UserEntity
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     @JsonBackReference

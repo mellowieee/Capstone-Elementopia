@@ -1,12 +1,37 @@
 import React from "react";
 import { Card, Typography, Button } from "@mui/material";
-import { useNavigate } from "react-router-dom"; // For navigation
+import { useNavigate } from "react-router-dom";
+import UserService from "../../services/UserService";
+import compoundList from "./compound-elements.json"; 
 
 const DailyChallengeCard = () => {
   const navigate = useNavigate();
 
-  // Handle the redirect to the challenge page
-  const handleStartChallenge = () => {
+  const handleStartChallenge = async () => {
+    const user = await UserService.getCurrentUser();
+    console.log("User from UserService:", user);
+
+    if (!user || !user.userId) {
+      alert("User is not logged in. Please log in first.");
+      return;
+    }
+
+    const discoveredCompounds = user.discoveredCompounds || []; 
+
+
+    const nextCompound = compoundList.find(
+      (compound) => !discoveredCompounds.includes(compound.Symbol)
+    );
+
+    if (!nextCompound) {
+      alert("You've completed all daily challenges!");
+      return;
+    }
+
+
+    localStorage.setItem("dailyChallengeCompound", JSON.stringify(nextCompound));
+
+
     navigate("/student/daily-challenge");
   };
 

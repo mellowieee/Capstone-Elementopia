@@ -1,5 +1,7 @@
 package com.elementopia.database.service;
 
+
+import com.elementopia.database.dto.*;
 import com.elementopia.database.entity.StudentEntity;
 import com.elementopia.database.entity.TeacherEntity;
 import com.elementopia.database.entity.UserEntity;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -28,7 +31,59 @@ public class UserService {
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
-    // Removed JwtUtil dependency for session-based authentication
+
+    public UserDTO toDTO(UserEntity user) {
+        UserDTO dto = new UserDTO();
+        dto.setUserId(user.getUserId());
+        dto.setUsername(user.getUsername());
+        dto.setEmail(user.getEmail());
+        dto.setFirstName(user.getFirstName());
+        dto.setLastName(user.getLastName());
+        dto.setRole(user.getRole());
+
+        // Map Student
+        if (user.getStudent() != null) {
+            StudentDTO studentDTO = new StudentDTO();
+            studentDTO.setFirstName(user.getStudent().getFirstName());
+            studentDTO.setLastName(user.getStudent().getLastName());
+            dto.setStudent(studentDTO);
+        }
+
+        // Map Teacher
+        if (user.getTeacher() != null) {
+            TeacherDTO teacherDTO = new TeacherDTO();
+            teacherDTO.setFirstName(user.getTeacher().getFirstName());
+            teacherDTO.setLastName(user.getTeacher().getLastName());
+            dto.setTeacher(teacherDTO);
+        }
+
+        // Map Discoveries
+        if (user.getDiscoveries() != null) {
+            List<DiscoveryDTO> discoveryDTOs = user.getDiscoveries().stream()
+                    .map(d -> {
+                        DiscoveryDTO dtoItem = new DiscoveryDTO();
+                        dtoItem.setName(d.getName());
+                        dtoItem.setDateDiscovered(d.getDateDiscovered());
+                        return dtoItem;
+                    }).collect(Collectors.toList());
+            dto.setDiscoveries(discoveryDTOs);
+        }
+
+        // Map Achievements
+        if (user.getAchievements() != null) {
+            List<AchievementDTO> achievementDTOs = user.getAchievements().stream()
+                    .map(a -> {
+                        AchievementDTO achievementDTO = new AchievementDTO();
+                        achievementDTO.setTitle(a.getTitle());
+                        achievementDTO.setDateAchieved(a.getDateAchieved());
+                        return achievementDTO;
+                    }).collect(Collectors.toList());
+            dto.setAchievements(achievementDTOs);
+        }
+
+        return dto;
+    }
+
 
     // Get User By Username
     public UserEntity findByUsername(String username) {
@@ -103,7 +158,7 @@ public class UserService {
         }
     }
 
-    // Register User
+    // Register User (JWT-compatible)
     public UserEntity registerUser(UserEntity user) {
         if (user.getFirstName() == null || user.getFirstName().trim().isEmpty() ||
                 user.getLastName() == null || user.getLastName().trim().isEmpty() ||
@@ -119,13 +174,14 @@ public class UserService {
         if (uRepo.findByEmail(user.getEmail()).isPresent()) {
             throw new RuntimeException("Email already taken!");
         }
-        // Hash the password
+
+        // Hash password
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        // Save user first to get the generated ID
+        // Save user first to get generated ID
         UserEntity savedUser = uRepo.save(user);
 
-        // Create role-specific entity and associate it with the user
+        // Create role-specific entity
         if ("STUDENT".equalsIgnoreCase(user.getRole())) {
             StudentEntity student = new StudentEntity();
             student.setUser(savedUser);
@@ -141,25 +197,7 @@ public class UserService {
             teacherRepository.save(teacher);
             savedUser.setTeacher(teacher);
         }
+
         return uRepo.save(savedUser);
-    }
-
-    // Login User (Session-Based Authentication)
-    public String loginUser(String username, String password) {
-        UserEntity user = findByUsername(username);
-
-        if (user == null) {
-            throw new RuntimeException("User not found!");
-        }
-
-        System.out.println("Username: " + username);
-        System.out.println("Password: " + password);
-        System.out.println("Stored Hashed Password: " + user.getPassword());
-
-        if (!passwordEncoder.matches(password, user.getPassword())) {
-            throw new RuntimeException("Invalid password!");
-        }
-
-        return "Login successful";
     }
 }

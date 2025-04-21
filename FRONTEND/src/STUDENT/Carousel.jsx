@@ -1,17 +1,17 @@
 import Slider from "react-slick";
-import "slick-carousel/slick/slick.css"; 
+import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import "./Carousel.css"; 
+import "../assets/css/Carousel.css";
 
 const Carousel = () => {
   const settings = {
     dots: true,
-    infinite: true, 
-    speed: 1000, 
-    slidesToShow: 3, 
-    slidesToScroll: 1, 
-    autoplay: true, 
-    autoplaySpeed: 3000, 
+    infinite: true,
+    speed: 1000,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 3000,
     pauseOnHover: true,
     cssEase: "ease-in-out",
   };

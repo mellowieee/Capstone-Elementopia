@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { Card, Typography, Button } from "@mui/material";
-import compoundElements from "../Student Components/compound-elements.json"; // Assuming JSON is in this path
-import ChemistrySimulation from "../Student Components/ChemistrySimulation"; // Import your Chemistry Simulation component
+import compoundElements from "../Student Components/compound-elements.json"; 
+import ChemistrySimulation from "../Student Components/ChemistrySimulation"; 
 
 const ChallengePage = ({ atoms, setAtoms, setMoleculeOutput }) => {
   const [challengeCompound, setChallengeCompound] = useState(null);
   const [isChallengeCompleted, setIsChallengeCompleted] = useState(false);
 
-  // Function to randomly select a compound
+
   const getRandomCompound = () => {
     const randomIndex = Math.floor(Math.random() * compoundElements.length);
     return compoundElements[randomIndex];
   };
 
-  // Function to check if the user has formed the correct compound
+
   const checkChallengeCompletion = () => {
     if (!challengeCompound) return;
 
@@ -21,7 +21,7 @@ const ChallengePage = ({ atoms, setAtoms, setMoleculeOutput }) => {
     const compoundElementsSorted = [...challengeCompound.Elements].sort();
     const currentElementsSorted = [...currentElements].sort();
 
-    // Check if the atoms formed match the compound
+
     if (JSON.stringify(compoundElementsSorted) === JSON.stringify(currentElementsSorted)) {
       setIsChallengeCompleted(true);
       setMoleculeOutput(
@@ -37,13 +37,13 @@ const ChallengePage = ({ atoms, setAtoms, setMoleculeOutput }) => {
     }
   };
 
-  // Initialize the challenge compound when the component mounts
+
   useEffect(() => {
     const selectedCompound = getRandomCompound();
     setChallengeCompound(selectedCompound);
   }, []);
 
-  // Function to handle start of the challenge
+
   const handleStartChallenge = () => {
     setIsChallengeCompleted(false);
     setAtoms([]); 
@@ -90,29 +90,7 @@ const ChallengePage = ({ atoms, setAtoms, setMoleculeOutput }) => {
             atoms={atoms}
             setAtoms={setAtoms}
             setMoleculeOutput={setMoleculeOutput}
-          /> {/* Pass necessary props to the simulation */}
-          <Button
-            variant="contained"
-            sx={{
-              mt: 2,
-              bgcolor: "#ff9800",
-              color: "#121212",
-              fontWeight: "bold",
-              fontSize: "1rem",
-              borderRadius: "5px",
-              textTransform: "uppercase",
-              boxShadow: "0px 0px 10px rgba(255, 152, 0, 0.7)",
-              transition: "background 0.3s, transform 0.2s",
-              "&:hover": {
-                bgcolor: "#ffb74d",
-                transform: "scale(1.1)",
-                boxShadow: "0px 0px 15px rgba(255, 152, 0, 1)",
-              },
-            }}
-            onClick={checkChallengeCompletion}
-          >
-            Check if You Completed the Challenge
-          </Button>
+          /> 
         </>
       ) : isChallengeCompleted ? (
         <>
