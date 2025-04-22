@@ -8,6 +8,7 @@ import FeatureCard from "./components/featurecard";
 import Login from "./STUDENT/login-card";
 import CreateLab from "./STUDENT/create-lab";
 import CustomRoomView from "./STUDENT/custom-room";
+import Laboratory from "./STUDENT/laboratory";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -17,7 +18,8 @@ createRoot(document.getElementById("root")).render(
     {/* <FeatureCard /> */}
     {/* <Login /> */}
     {/* <CreateLab /> */}
-    <CustomRoomView />
+    {/* <CustomRoomView /> */}
+    <Laboratory />
      </BrowserRouter>
   </StrictMode>
 );
