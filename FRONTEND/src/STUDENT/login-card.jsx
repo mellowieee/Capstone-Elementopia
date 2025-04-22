@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./login-card.css";
+import "../assets/css/login-card.css";
 import FeatureCard from "../components/featurecard";
 import UserService from "../services/UserService";
 import { useNavigate } from "react-router-dom";
