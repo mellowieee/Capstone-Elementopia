@@ -69,6 +69,7 @@ const StateChangesChallenge = () => {
   const [completedSubstances, setCompletedSubstances] = useState([]);
   const [targetAchieved, setTargetAchieved] = useState(false);
   const [cycleProgress, setCycleProgress] = useState(0); // 0=none, 1=solid, 2=liquid, 3=gas
+  const [lastAchievedState, setLastAchievedState] = useState(null);
   
   // Handle drawer
   const handleDrawerOpen = () => setOpen(true);
@@ -80,7 +81,8 @@ const StateChangesChallenge = () => {
     setSelectedSubstance(newSubstance);
     // Reset temperature to room temperature
     setTemperature(25);
-    updateState(newSubstance, 25, pressure);
+    setPressure(1);
+    updateState(newSubstance, 25, 1);
   };
 
   // Handle temperature change
@@ -107,6 +109,8 @@ const StateChangesChallenge = () => {
       setCompletedChallengesForSubstance(0);
       setTargetAchieved(false);
       setCycleProgress(0);
+      setLastAchievedState(null);
+      setScore(0); // Reset score when exiting challenge mode
       setFeedback('Explore mode activated. Try different temperature and pressure combinations!');
       setTimeout(() => setFeedback(''), 2000);
     } else {
@@ -118,6 +122,8 @@ const StateChangesChallenge = () => {
       setTargetAchieved(false);
       setCycleProgress(0);
       setCompletedChallengesForSubstance(0);
+      setLastAchievedState(null);
+      setScore(0); // Reset score when starting challenge mode
       setupTargetChallenge(substanceToUse);
       setChallengeActive(true);
     }
@@ -127,19 +133,24 @@ const StateChangesChallenge = () => {
   const updateState = (substance, temp, pres) => {
     let newState;
     
-    // Simple state determination logic
-    // This is simplified - a real implementation would use phase diagrams
-    if (temp < substance.freezingPoint) {
-      newState = 'solid';
-    } else if (temp < substance.boilingPoint) {
-      newState = 'liquid';
+    // Special case for CO2 which has different phase change behavior
+    if (substance.id === 'co2') {
+      if (temp < substance.freezingPoint) {
+        newState = 'solid'; // Dry ice
+      } else if (pres >= 5.1 && temp < substance.boilingPoint) {
+        newState = 'liquid'; // Liquid CO2 (only under high pressure)
+      } else {
+        newState = 'gas'; // CO2 gas
+      }
     } else {
-      newState = 'gas';
-    }
-    
-    // Special case for CO2 which sublimates
-    if (substance.id === 'co2' && pres < 5.1 && temp < substance.boilingPoint) {
-      newState = temp < substance.freezingPoint ? 'solid' : 'gas';
+      // Standard phase change logic for other substances
+      if (temp < substance.freezingPoint) {
+        newState = 'solid';
+      } else if (temp < substance.boilingPoint) {
+        newState = 'liquid';
+      } else {
+        newState = 'gas';
+      }
     }
     
     // Update state
@@ -154,19 +165,70 @@ const StateChangesChallenge = () => {
     }
   };
 
+  // Set up initial conditions based on the target state we want to achieve
+  const setupInitialConditions = (substance, targetStateToAchieve) => {
+    // Set initial conditions that are NOT in the target state
+    let initialTemp = 25; // default room temp
+    let initialPressure = 1; // default 1 atm
+    
+    // For CO2, special handling
+    if (substance.id === 'co2') {
+      if (targetStateToAchieve === 'solid') {
+        // For solid CO2 target, start with warm CO2
+        initialTemp = 0; // Not cold enough for solid, but not too warm
+      } else if (targetStateToAchieve === 'liquid') {
+        // For liquid CO2 target, start with low pressure gas
+        initialTemp = -70; // Cold but not solid
+        initialPressure = 1; // Low pressure (won't be liquid)
+      } else if (targetStateToAchieve === 'gas') {
+        // For gas target, start with solid
+        initialTemp = -100; // Cold enough for solid CO2
+        initialPressure = 1;
+      }
+    } else {
+      // For other substances, use opposite temperatures
+      if (targetStateToAchieve === 'solid') {
+        initialTemp = substance.freezingPoint + 20; // Warmer than freezing
+      } else if (targetStateToAchieve === 'liquid') {
+        // 50% chance to be too cold or too hot
+        initialTemp = Math.random() < 0.5 ? 
+          substance.freezingPoint - 20 : // Too cold (solid)
+          substance.boilingPoint + 20;   // Too hot (gas)
+      } else if (targetStateToAchieve === 'gas') {
+        initialTemp = substance.boilingPoint - 20; // Cooler than boiling
+      }
+    }
+    
+    // Set temperature and pressure to initial values
+    setTemperature(initialTemp);
+    setPressure(initialPressure);
+    
+    // Update the state to match these conditions
+    updateState(substance, initialTemp, initialPressure);
+  };
+
   // Set up a target state challenge
   const setupTargetChallenge = (substance = selectedSubstance) => {
     const states = ['solid', 'liquid', 'gas'];
     
     // Ensure we don't get the same state twice in a row
-    let currentTargetState = targetState;
     let randomState;
     do {
       randomState = states[Math.floor(Math.random() * states.length)];
-    } while (randomState === currentTargetState);
+    } while (randomState === lastAchievedState);
+    
+    // Special case for CO2 - if trying for liquid CO2 cycle, ensure it's achievable
+    if (substance.id === 'co2' && randomState === 'liquid' && challengeType !== 'cycle') {
+      // Make sure we're not setting up an impossible challenge for standalone CO2 liquid
+      // CO2 can only be liquid under high pressure
+      setFeedback("Hint: CO₂ can only be liquid under high pressure and specific temperatures!");
+    }
     
     setTargetState(randomState);
     setTargetAchieved(false); // Reset target achievement tracker
+    
+    // Set up initial conditions that aren't already in the target state
+    setupInitialConditions(substance, randomState);
     
     const challengeNumber = completedChallengesForSubstance + 1;
     setFeedback(`Challenge ${challengeNumber}/3: Make ${substance.name} a ${substance.states[randomState].name}!`);
@@ -176,6 +238,10 @@ const StateChangesChallenge = () => {
   const setupCycleChallenge = (substance = selectedSubstance) => {
     setTargetState('solid'); // Start with solid
     setCycleProgress(0); // Reset cycle progress
+    
+    // Set up initial conditions for first phase (solid)
+    setupInitialConditions(substance, 'solid');
+    
     setFeedback(`Challenge 3/3: Start with ${substance.states.solid.name}, then cycle through all states!`);
   };
 
@@ -212,6 +278,7 @@ const StateChangesChallenge = () => {
     
     // Reset challenge count for next substance
     setCompletedChallengesForSubstance(0);
+    setLastAchievedState(null);
     
     // Find next uncompleted substance
     let nextIndex = (currentSubstanceIndex + 1) % substances.length;
@@ -226,6 +293,7 @@ const StateChangesChallenge = () => {
       setCurrentSubstanceIndex(0);
       setTargetAchieved(false);
       setCycleProgress(0);
+      setScore(0); // Reset score when finishing all challenges
       setFeedback('Congratulations! You\'ve completed challenges for all substances! Returning to explore mode.');
       setTimeout(() => setFeedback(''), 4000);
       return;
@@ -240,12 +308,8 @@ const StateChangesChallenge = () => {
     setCurrentSubstanceIndex(nextIndex);
     const nextSubstance = substances[nextIndex];
     
-    // Set next substance and reset to room temperature
+    // Set next substance and reset
     setSelectedSubstance(nextSubstance);
-    setTemperature(25);
-    setPressure(1);
-    setTargetAchieved(false);
-    setCycleProgress(0);
     setChallengeType('target'); // Reset to target challenge for new substance
     
     // Set up new challenge
@@ -253,7 +317,6 @@ const StateChangesChallenge = () => {
       setFeedback(`Next substance: ${nextSubstance.name}!`);
       setTimeout(() => {
         setupTargetChallenge(nextSubstance);
-        updateState(nextSubstance, 25, 1);
       }, 1500);
     }, 1000);
   };
@@ -267,6 +330,7 @@ const StateChangesChallenge = () => {
     if (challengeType === 'target' && newState === targetState && !targetAchieved) {
       // Mark target as achieved to prevent multiple score increments
       setTargetAchieved(true);
+      setLastAchievedState(newState);
       
       // Award points and provide feedback
       setFeedback(`✅ Success! You've changed ${substance.name} to ${substance.states[newState].name}! +10 points`);
@@ -285,17 +349,20 @@ const StateChangesChallenge = () => {
         setFeedback(`✅ ${substance.states.solid.name} created! Now make it a ${substance.states.liquid.name}!`);
         setTargetState('liquid');
         setScore(prevScore => prevScore + 10);
+        setLastAchievedState('solid');
       } 
       else if (newState === 'liquid' && cycleProgress === 1) {
         setCycleProgress(2);
         setFeedback(`✅ ${substance.states.liquid.name} created! Now make it a ${substance.states.gas.name}!`);
         setTargetState('gas');
         setScore(prevScore => prevScore + 10);
+        setLastAchievedState('liquid');
       } 
       else if (newState === 'gas' && cycleProgress === 2) {
         setCycleProgress(3);
         setFeedback(`✅ ${substance.states.gas.name} created! Full cycle completed! +50 points!`);
         setScore(prevScore => prevScore + 50);
+        setLastAchievedState('gas');
         
         // Move to next substance after completing cycle
         setTimeout(() => {
@@ -374,7 +441,7 @@ const StateChangesChallenge = () => {
       >
         <DrawerHeader />
 
-        <Box className="game-container" sx={{ height: "600px", overflowY: "auto" }}>
+        <Box className="game-container">
           <Box className="header-section">
             <Typography variant="h4" className="game-title">
               State Changes Challenge
@@ -391,9 +458,13 @@ const StateChangesChallenge = () => {
                   : "Challenge Mode"
                 }
               </Button>
-              <Typography variant="h6" className="score-display">
-                Score: {score}
-              </Typography>
+              
+              {/* Only show score when in challenge mode */}
+              {challengeActive && (
+                <Typography variant="h6" className="score-display">
+                  Score: {score}
+                </Typography>
+              )}
             </Box>
           </Box>
 
@@ -469,12 +540,11 @@ const StateChangesChallenge = () => {
             </Box>
           </Box>
 
-          {/* Simulation Container - Set fixed height to ensure consistent size */}
+          {/* Simulation Container */}
           <Box 
             className={`simulation-container state-${currentState}`}
             style={{ 
-              backgroundColor: selectedSubstance.states[currentState].color,
-              height: "250px"  // Fixed height
+              backgroundColor: selectedSubstance.states[currentState].color
             }}
           >
             <Typography variant="h5" className="state-label">
@@ -523,8 +593,14 @@ const StateChangesChallenge = () => {
               <strong>Freezing Point:</strong> {selectedSubstance.freezingPoint}°C | 
               <strong> Boiling Point:</strong> {selectedSubstance.boilingPoint}°C
             </Typography>
+            {selectedSubstance.id === 'co2' && (
+              <Typography variant="body2" color="info.main">
+                <strong>CO₂ Special Property:</strong> At normal pressure, CO₂ sublimates directly from solid to gas. 
+                It needs high pressure (5.1 atm) to become liquid.
+              </Typography>
+            )}
             <Typography variant="body2">
-              Particles move faster as temperature increases. State changes occur at specific temperatures.
+              Particles move faster as temperature increases. State changes occur at specific temperatures and pressures.
             </Typography>
           </Box>
         </Box>
