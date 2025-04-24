@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.List;
+
 @Entity
 @Table(name = "user")
 @Data
@@ -57,4 +59,12 @@ public class UserEntity {
 >>>>>>> c86b59f5a44db58bcd910fc19b0c61ceb1cdb006
     @JsonManagedReference
     private TeacherEntity teacher;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<DiscoveryEntity> discoveries;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<AchievementEntity> achievements;
 }

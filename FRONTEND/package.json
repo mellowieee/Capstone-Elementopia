@@ -27,8 +27,11 @@
     "react-router-dom": "^7.3.0",
     "react-simple-typewriter": "^5.0.1",
     "react-slick": "^0.30.3",
+<<<<<<< HEAD
     "react-speech-kit": "^3.0.1",
     "react-tsparticles": "^2.12.2",
+=======
+>>>>>>> f091a6cbcbbccfa51b1caa9eb87dc9e91edbfd74
     "recharts": "^2.15.2",
     "slick-carousel": "^1.8.1",
     "styled-components": "^6.1.16"

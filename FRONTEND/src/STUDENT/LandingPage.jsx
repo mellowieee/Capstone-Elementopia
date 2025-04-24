@@ -10,20 +10,20 @@ import Navigation from "../components/navigation";
 
 function LandingPage() {
   console.log("LandingPage component rendered!");
-  const settings = {
-    dots: true, // Show navigation dots
-    infinite: true,
-    speed: 500,
-    slidesToShow: 3, // Number of slides visible at a time
-    slidesToScroll: 3, // Number of slides to scroll at a time
-    autoplay: true, // Auto-play slides
-    autoplaySpeed: 3000,
-    arrows: true,
-  };
+  // const settings = {
+  //   dots: true, // Show navigation dots
+  //   infinite: true,
+  //   speed: 500,
+  //   slidesToShow: 3, // Number of slides visible at a time
+  //   slidesToScroll: 3, // Number of slides to scroll at a time
+  //   autoplay: true, // Auto-play slides
+  //   autoplaySpeed: 3000,
+  //   arrows: true,
+  // };
 
   return (
     <div className="landingpage-container">
-      <Navigation/>
+      <Navigation />
       <div id="header-container">
         <div className="content-header">
           <h1 className="content-title">
@@ -44,11 +44,10 @@ function LandingPage() {
           <img src={animationGif} alt="Chemistry GIF" className="gif-image" />
         </div>
       </div>
-      
-      <MissionSection/>
-      <Carousel/>
-      <Footer/>
 
+      <MissionSection />
+      <Carousel />
+      <Footer />
     </div>
   );
 }

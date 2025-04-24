@@ -5,6 +5,7 @@ import { Box, Grid, Button } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import Navbar from "../components/NavBar";
 import Sidebar from "../components/Sidebar";
+<<<<<<< HEAD
 import ElementMatchGame from "../components/MiniGames/ElementMatchGame"; // Import your mini-game here
 import Assistant from "../components/Student Components/Assistant"
 // Assets
@@ -16,6 +17,9 @@ import card5 from "../assets/img/card5.jpg";
 
 // Styles
 import "../assets/css/StudentGameRoomPage.css";
+=======
+import StudentElementMatcher from "./StudentElementMatcher";
+>>>>>>> f091a6cbcbbccfa51b1caa9eb87dc9e91edbfd74
 
 const DrawerHeader = styled("div")(({ theme }) => ({
   ...theme.mixins.toolbar,
@@ -46,6 +50,7 @@ const StudentGameRoomPage = () => {
     // }, []);
 
   return (
+<<<<<<< HEAD
     <Box /*sx={{ display: "flex", backgroundColor: "black", minHeight: "100vh" }}*/>
       <Navbar open={open} />
       <Sidebar
@@ -103,6 +108,13 @@ const StudentGameRoomPage = () => {
             ))}
           </Grid>
         )}
+=======
+    <Box sx={{ display: "flex", bgcolor: "#121212", color: "white", minHeight: "100vh", width: "100vw" }}>
+      <Navbar open={open} />
+      <Sidebar open={open} handleDrawerOpen={handleDrawerOpen} handleDrawerClose={handleDrawerClose} />
+      <Box  component="main" sx={{ flexGrow: 1, p: 3, marginLeft: open ? "20px" : "10px", width: "100%", }}>
+        <StudentElementMatcher/>
+>>>>>>> f091a6cbcbbccfa51b1caa9eb87dc9e91edbfd74
       </Box>
       <div className="game-room">
         <Assistant studentName={studentName}/>

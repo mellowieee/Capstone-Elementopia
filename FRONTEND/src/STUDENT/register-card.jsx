@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
 import FeatureCard from "../components/featurecard";
+<<<<<<< HEAD
 import "../assets/css/buttons.css";
+=======
+import "../components/buttons.css";
+>>>>>>> f091a6cbcbbccfa51b1caa9eb87dc9e91edbfd74
 import "../assets/css/register-card.css";
 import UserService from "../services/UserService";
 import { useNavigate } from "react-router-dom";
