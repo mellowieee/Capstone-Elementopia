@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 // import Confetti from 'react-confetti';
 // import { useWindowSize } from 'react-use';
 import { Box, Grid, Button } from "@mui/material";
@@ -6,7 +6,7 @@ import { styled } from "@mui/material/styles";
 import Navbar from "../components/NavBar";
 import Sidebar from "../components/Sidebar";
 import ElementMatchGame from "../components/MiniGames/ElementMatchGame"; // Import your mini-game here
-
+import Assistant from "../components/Student Components/Assistant"
 // Assets
 import card1 from "../assets/img/card1.jpg";
 import card2 from "../assets/img/card2.jpg";
@@ -32,17 +32,18 @@ const gameCards = [
 const StudentGameRoomPage = () => {
   const [open, setOpen] = useState(false);
   const [selectedGame, setSelectedGame] = useState(null);
+  const studentName = "Mark";
 
   const handleDrawerOpen = () => setOpen(true);
   const handleDrawerClose = () => setOpen(false);
 
-  const [dailyGame, setDailyGame] = useState(null);
+  // const [dailyGame, setDailyGame] = useState(null);
   
-    useEffect(() => {
-      fetch('/api/daily-challenge')
-        .then(res => res.json())
-        .then(data => setDailyGame(data));
-    }, []);
+    // useEffect(() => {
+    //   fetch('/api/daily-challenge')
+    //     .then(res => res.json())
+    //     .then(data => setDailyGame(data));
+    // }, []);
 
   return (
     <Box /*sx={{ display: "flex", backgroundColor: "black", minHeight: "100vh" }}*/>
@@ -103,15 +104,9 @@ const StudentGameRoomPage = () => {
           </Grid>
         )}
       </Box>
-      <div className="bg-yellow-100 border-l-4 border-yellow-500 p-4 rounded-lg my-4">
-        <h2 className="text-xl font-bold mb-1">🎯 Daily Challenge</h2>
-        <p className="text-lg">{dailyGame?.title}</p>
-        <p className="text-sm">{dailyGame?.description}</p>
-        <p className="text-xs mt-1 text-green-600">Reward: {dailyGame?.reward}</p>
-        <button className="mt-2 bg-yellow-500 text-white px-4 py-1 rounded hover:bg-yellow-600">
-          Play Now
-        </button>
-    </div>
+      <div className="game-room">
+        <Assistant studentName={studentName}/>
+      </div>
     </Box>
   );
 };
