@@ -5,9 +5,8 @@ import { Box, Grid, Button } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import Navbar from "../components/NavBar";
 import Sidebar from "../components/Sidebar";
-<<<<<<< HEAD
 import ElementMatchGame from "../components/MiniGames/ElementMatchGame"; // Import your mini-game here
-import Assistant from "../components/Student Components/Assistant"
+import Assistant from "../components/Student Components/Assistant";
 // Assets
 import card1 from "../assets/img/card1.jpg";
 import card2 from "../assets/img/card2.jpg";
@@ -17,9 +16,7 @@ import card5 from "../assets/img/card5.jpg";
 
 // Styles
 import "../assets/css/StudentGameRoomPage.css";
-=======
 import StudentElementMatcher from "./StudentElementMatcher";
->>>>>>> f091a6cbcbbccfa51b1caa9eb87dc9e91edbfd74
 
 const DrawerHeader = styled("div")(({ theme }) => ({
   ...theme.mixins.toolbar,
@@ -41,32 +38,11 @@ const StudentGameRoomPage = () => {
   const handleDrawerOpen = () => setOpen(true);
   const handleDrawerClose = () => setOpen(false);
 
-  // const [dailyGame, setDailyGame] = useState(null);
-  
-    // useEffect(() => {
-    //   fetch('/api/daily-challenge')
-    //     .then(res => res.json())
-    //     .then(data => setDailyGame(data));
-    // }, []);
-
   return (
-<<<<<<< HEAD
-    <Box /*sx={{ display: "flex", backgroundColor: "black", minHeight: "100vh" }}*/>
+    <Box sx={{ bgcolor: "#121212", color: "white", minHeight: "100vh", width: "100vw" }}>
       <Navbar open={open} />
-      <Sidebar
-        open={open}
-        handleDrawerOpen={handleDrawerOpen}
-        handleDrawerClose={handleDrawerClose}
-      />
-
-      <Box
-        component="main"
-        sx={{
-          flexGrow: 1,
-          p: 3,
-          color: "white",
-        }}
-      >
+      <Sidebar open={open} handleDrawerOpen={handleDrawerOpen} handleDrawerClose={handleDrawerClose} />
+      <Box component="main" sx={{ flexGrow: 1, p: 3, marginLeft: open ? "20px" : "10px", width: "100%" }}>
         <DrawerHeader />
 
         {/* Show Back button and selected game if any */}
@@ -82,10 +58,8 @@ const StudentGameRoomPage = () => {
 
             {selectedGame === "Elemental Match" && <ElementMatchGame />}
             {/* Add more games here */}
-            {/* selectedGame === "Build the Atom" && <BuildAtomGame /> */}
           </>
         ) : (
-          // Game Card List
           <Grid
             container
             spacing={2}
@@ -108,16 +82,14 @@ const StudentGameRoomPage = () => {
             ))}
           </Grid>
         )}
-=======
-    <Box sx={{ display: "flex", bgcolor: "#121212", color: "white", minHeight: "100vh", width: "100vw" }}>
-      <Navbar open={open} />
-      <Sidebar open={open} handleDrawerOpen={handleDrawerOpen} handleDrawerClose={handleDrawerClose} />
-      <Box  component="main" sx={{ flexGrow: 1, p: 3, marginLeft: open ? "20px" : "10px", width: "100%", }}>
-        <StudentElementMatcher/>
->>>>>>> f091a6cbcbbccfa51b1caa9eb87dc9e91edbfd74
+
+        {/* Optional game or interaction area */}
+        <StudentElementMatcher />
       </Box>
+
+      {/* Assistant component */}
       <div className="game-room">
-        <Assistant studentName={studentName}/>
+        <Assistant studentName={studentName} />
       </div>
     </Box>
   );

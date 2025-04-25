@@ -1,9 +1,6 @@
 import { useEffect, useRef } from "react";
-<<<<<<< HEAD
 import "../assets/css/MissionSection.css"; 
-=======
 import "../assets/css/MissionSection.css";
->>>>>>> f091a6cbcbbccfa51b1caa9eb87dc9e91edbfd74
 
 const MissionSection = () => {
   const sectionRef = useRef(null);
